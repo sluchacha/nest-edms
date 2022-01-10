@@ -1,6 +1,7 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document } from 'mongoose';
+import { Transform, Type } from 'class-transformer';
+import { Document, ObjectId } from 'mongoose';
 
 @Schema({ _id: false })
 export class Region {
@@ -17,8 +18,17 @@ export class Region {
   ward: string;
 }
 
-@Schema()
+export const RegionSchema = SchemaFactory.createForClass(Region);
+
+@Schema({
+  toJSON: {
+    virtuals: true,
+  },
+})
 export class Applicant {
+  @Transform(({ value }) => value.toString())
+  _id: ObjectId;
+
   @ApiProperty()
   @Prop({ maxlength: 255, required: true, trim: true, uppercase: true })
   fullName: string;
@@ -49,8 +59,13 @@ export class Applicant {
   @Prop([{ type: String, trim: true }])
   telephone: string[];
 
+  /**
+   * The @Type(()=>Region) makes sure the class-tranformer
+   * transforms the Region object too
+   */
   @ApiProperty({ type: Region, required: false })
-  @Prop({ type: Region })
+  @Prop({ type: RegionSchema })
+  @Type(() => Region)
   region: Region;
 
   @ApiProperty()

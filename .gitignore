@@ -37,4 +37,6 @@ lerna-debug.log*
 # Environment Variables
 .env
 REF.txt
+Entity.txt
+Samples.txt
 /upload

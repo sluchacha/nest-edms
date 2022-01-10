@@ -4,6 +4,8 @@ import { ConfigType, registerAs } from '@nestjs/config';
 // Create a type safe configuration
 export const appConfiguration = registerAs('app', () => {
   return {
+    environment: process.env.NODE_ENV || 'development',
+    apiKey: process.env.API_KEY || 'secret_key',
     protocol: process.env.APP_PROTOCOL || 'http',
     host: process.env.APP_HOST || 'localhost',
     port: Number(process.env.APP_PORT) || 3000,

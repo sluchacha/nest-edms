@@ -61,20 +61,14 @@ export class CreateApplicantDto {
   @IsNotEmpty()
   readonly dob: string;
 
-  @ApiProperty({
-    enum: Object.keys(Gender),
-    example: Gender.Male,
-  })
+  @ApiProperty({ enum: Gender, example: Gender.Male })
   @IsEnum(Gender, {
     message: `Gender must be one of these ${Object.keys(Gender)}`,
   })
   @IsNotEmpty()
   readonly gender: string;
 
-  @ApiProperty({
-    enum: Object.keys(MaritalStatus),
-    example: MaritalStatus.Single,
-  })
+  @ApiProperty({ enum: MaritalStatus, example: MaritalStatus.Single })
   @IsEnum(MaritalStatus, {
     message: `Marital status must be one of these ${Object.keys(
       MaritalStatus,
@@ -83,7 +77,11 @@ export class CreateApplicantDto {
   @IsNotEmpty()
   readonly maritalStatus: string;
 
-  @ApiProperty({ type: String, isArray: true, examples: ['0712659790'] })
+  @ApiProperty({
+    type: String,
+    isArray: true,
+    example: ['0712659790', '0770511643'],
+  })
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
   @ArrayUnique()

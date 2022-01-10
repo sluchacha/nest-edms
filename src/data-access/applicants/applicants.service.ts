@@ -39,7 +39,9 @@ export class ApplicantsService {
     if (applicant)
       throw new BadRequestException(`The applicant already exists`);
 
-    return await this.applicantModel.create(createApplicantDto);
+    applicant = new this.applicantModel(createApplicantDto);
+
+    return await this.applicantModel.create(applicant);
   }
 
   /**

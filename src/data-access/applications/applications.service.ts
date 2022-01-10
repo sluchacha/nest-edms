@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  Logger
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -19,6 +20,8 @@ import { PaginationQueryDto } from '@data-access-dtos/common';
 
 @Injectable()
 export class ApplicationsService {
+  private readonly logger = new Logger(ApplicationsService.name);
+
   constructor(
     @InjectModel(Application.name)
     private readonly applicationModel: Model<ApplicationDocument>,
@@ -65,8 +68,8 @@ export class ApplicationsService {
 
     let application = await this.applicationModel
       .findOne({
-        job: job.id,
-        applicant: applicant.id,
+        "job._id": job.id,
+        "applicant._id": applicant.id,
       })
       .exec();
 
@@ -75,26 +78,18 @@ export class ApplicationsService {
         'A similar application has already been recorded for the given job by the said applicant.',
       );
 
-    application = await this.applicationModel.create({
-      job: job.id,
-      applicant: applicant.id,
+    const { isDisabled, qualifications, ppr, files, documents } =
+      createApplicationDto;
+
+    return await this.applicationModel.create({
+      job, 
+      applicant, 
       isDisabled: createApplicationDto.isDisabled,
       qualifications: createApplicationDto.qualifications,
       ppr: createApplicationDto.ppr,
+      chapterSix: documents,
       files: createApplicationDto.files,
     });
-
-    return await application.populate([
-      {
-        path: 'job',
-        select: '-description -__v',
-        populate: { path: 'organization', select: 'code name' },
-      },
-      {
-        path: 'applicant',
-        select: '-__v -creationDate',
-      },
-    ]);
   }
 
   /**
@@ -112,9 +107,9 @@ export class ApplicationsService {
         select: '-description -__v',
         populate: { path: 'organization', select: 'code name' },
       })
-      .populate('applicant', '-__v -creationDate')
+      .populate('applicant', '-__v -createdAt')
       .select('-__v')
-      .sort('dateOfApplication')
+      .sort('createdAt')
       .skip(offset)
       .limit(limit)
       .exec();
@@ -133,7 +128,7 @@ export class ApplicationsService {
         select: 'organization name noOfVacancies',
         populate: { path: 'organization', select: 'name' },
       })
-      .populate('applicant', '-__v -creationDate')
+      .populate('applicant', '-__v -createdAt')
       .select('-__v')
       .exec();
     return application;
@@ -206,7 +201,7 @@ export class ApplicationsService {
    */
   async checkApplicantHasApplications(applicantId: string): Promise<Boolean> {
     const application = await this.applicationModel
-      .findOne({ applicant: applicantId })
+      .findOne({ 'applicant.id': applicantId })
       .exec();
 
     return application ? true : false;
@@ -219,7 +214,7 @@ export class ApplicationsService {
   async findAllApplicantApplications(applicantId: string): Promise<any> {
     const applications = await this.applicationModel
       .find({
-        applicant: applicantId,
+        'applicant._id': applicantId,
       })
       .populate({
         path: 'job',
@@ -239,7 +234,7 @@ export class ApplicationsService {
   async findAllJobApplicants(jobId: string) {
     const applications = await this.applicationModel
       .find({
-        job: jobId,
+        'job._id': jobId,
       })
       .populate('applicant -__v')
       .exec();

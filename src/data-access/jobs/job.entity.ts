@@ -21,7 +21,11 @@ enum JobStatus {
   ARCHIVED,
 } */
 
-@Schema()
+@Schema({
+  toJSON: {
+    virtuals: true,
+  },
+})
 export class Job {
   @ApiProperty()
   @Prop({

@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  SerializeOptions,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApplicationsService } from '@data-access/applications/applications.service';
 import {
@@ -23,10 +25,16 @@ import {
 import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
 import { Application } from '@data-access/applications/application.entity';
 import { PaginationQueryDto } from '@data-access-dtos/common';
+import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
 
 @Controller('applications')
 @ApiTags('Applications')
 @ApplyApiStatus(400, 401, 403, 404, 500)
+@UseInterceptors(MongooseClassSerializerInterceptor(Application))
+@SerializeOptions({
+  strategy: 'exposeAll',
+  excludePrefixes: ['_', '__'],
+})
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 

@@ -2,22 +2,27 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class QualificationDto {
-  @ApiProperty()
+  @ApiProperty({example: 'University of Nairobi'})
+  @IsString()
+  @IsNotEmpty()
+  readonly institution: string;
+
+  @ApiProperty({example:'Degree'})
   @IsString()
   @IsNotEmpty()
   readonly award: string;
 
-  @ApiProperty()
+  @ApiProperty({example:'Bachelor of Business Information Technology (BBIT)'})
   @IsString()
   @IsNotEmpty()
   readonly title: string;
 
-  @ApiProperty()
+  @ApiProperty({example: 'First Class Honors'})
   @IsString()
   @IsNotEmpty()
   readonly grade: string;
 
-  @ApiProperty()
+  @ApiProperty({example:2022})
   @IsPositive()
   @IsNumber()
   @IsNotEmpty()

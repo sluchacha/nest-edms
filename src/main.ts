@@ -7,6 +7,8 @@ import * as csrf from 'csrf';
 import * as helmet from 'helmet';
 import * as dotenv from 'dotenv';
 import { AppConfiguration, appConfiguration } from './utils-config';
+import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
+import { TimeoutInterceptor } from '@common/interceptors/timeout.interceptor';
 
 function configureSwagger(
   appConfig: AppConfiguration,
@@ -31,7 +33,9 @@ function configureSwagger(
 
 async function bootstrap() {
   dotenv.config();
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // logger: ['error', 'warn', 'debug'],
+  });
   const appConfig = app.get<AppConfiguration>(appConfiguration.KEY);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
@@ -52,11 +56,14 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true,
       },
-      // forbidUnknownValues: true,
     }),
   );
 
-  // app.useGlobalInterceptors(new WrapResponseInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
+  /* app.useGlobalInterceptors(
+    new WrapResponseInterceptor(),
+    new TimeoutInterceptor(),
+  ); */
 
   await app.listen(appConfig.port, () => {
     Logger.log(`Listening on: ${appConfig.domain}/${globalPrefix}`);

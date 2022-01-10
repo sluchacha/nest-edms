@@ -1,11 +1,16 @@
-import { Applicant } from '@data-access/applicants/applicant.entity';
-import { Job } from '@data-access/jobs/job.entity';
+import { Applicant, ApplicantSchema } from '@data-access/applicants/applicant.entity';
+import { Job, JobSchema } from '@data-access/jobs/job.entity';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 
 @Schema({ _id: false })
 export class Qualification {
+  @ApiProperty()
+  @Prop({ required: true, trim: true, uppercase: true })
+  institution: string;
+
   @ApiProperty()
   @Prop({ required: true, trim: true, uppercase: true })
   award: string;
@@ -44,19 +49,30 @@ export class FileDocument {
 // Generate a Mongoose Schema before use as Subdocument
 export const FileDocumentSchema = SchemaFactory.createForClass(FileDocument);
 
-@Schema()
+@Schema({
+  toJSON: {
+    virtuals: true,
+  },
+})
 export class Application {
   @ApiProperty({ type: Job, required: true })
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Job.name, required: true })
-  job: Types.ObjectId;
+  @Prop({ 
+    // type: MongooseSchema.Types.ObjectId, 
+    // ref: Job.name, 
+    type: JobSchema,
+    required: true })
+  @Type(() => Job)
+  job: Job;
 
   @ApiProperty({ type: Applicant, required: true })
   @Prop({
-    type: MongooseSchema.Types.ObjectId,
-    ref: Applicant.name,
+    // type: MongooseSchema.Types.ObjectId,
+    // ref: Applicant.name,
+    type: ApplicantSchema,
     required: true,
   })
-  applicant: Types.ObjectId;
+  @Type(() => Applicant)
+  applicant: Applicant;
 
   @ApiProperty({ required: false })
   @Prop({ default: false })
@@ -67,8 +83,12 @@ export class Application {
   qualifications: Qualification[];
 
   @ApiProperty({ required: false })
-  @Prop({ maxlength: 255, trim: true })
+  @Prop({ maxlength: 255, trim: true, uppercase:true })
   ppr: string;
+
+  @ApiProperty({required: false})
+  @Prop([{ type: String, trim: true }])
+  chapterSix: string[];
 
   @ApiProperty({ type: FileDocument, isArray: true, required: false })
   @Prop({ type: [FileDocumentSchema], default: [] })

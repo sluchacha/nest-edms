@@ -11,6 +11,7 @@ import {
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfiguration, mongoConfiguration, multerConfiguration],
+      expandVariables: true,
     }),
   ],
   providers: [],

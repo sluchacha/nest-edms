@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  SerializeOptions,
+  Logger,
 } from '@nestjs/common';
 import { PaginationQueryDto } from '@data-access-dtos/common/pagination-query.dto';
 import { ApplicantsService } from '../data-access/applicants/applicants.service';
@@ -24,11 +27,19 @@ import {
 import { Applicant } from '@data-access/applicants/applicant.entity';
 import { ValidateObjectIdPipe } from '@common/pipes/validate-object-id.pipe';
 import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
+import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
 
 @Controller('applicants')
 @ApiTags('Applicants')
 @ApplyApiStatus(400, 401, 403, 404, 500)
+@UseInterceptors(MongooseClassSerializerInterceptor(Applicant))
+@SerializeOptions({
+  strategy: 'exposeAll',
+  excludePrefixes: ['_', '__'],
+})
 export class ApplicantsController {
+  private readonly logger = new Logger(ApplicantsController.name);
+
   constructor(private readonly applicantsService: ApplicantsService) {}
 
   @Post()
@@ -48,7 +59,10 @@ export class ApplicantsController {
   async findAll(
     @Query() paginationQuery: PaginationQueryDto,
   ): Promise<Applicant[]> {
-    return await this.applicantsService.findAll(paginationQuery);
+    this.logger.log(`Hit the findAll route`);
+    const applicants = await this.applicantsService.findAll(paginationQuery);
+    this.logger.debug(`Found ${applicants.length} applicants`);
+    return applicants;
   }
 
   @Get(':id')

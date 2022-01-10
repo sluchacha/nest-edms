@@ -26,8 +26,16 @@ export class JobsService {
     return `This action returns a #${id} job`;
   }
 
-  update(id: number, updateJobDto: UpdateJobDto) {
-    return `This action updates a #${id} job`;
+  async update(id: string, updateJobDto: UpdateJobDto): Promise<Job> {
+    return await this.jobModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: updateJobDto,
+        },
+        { new: true },
+      )
+      .exec();
   }
 
   remove(id: number) {

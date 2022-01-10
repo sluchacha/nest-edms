@@ -1,17 +1,28 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { IS_PUBLIC_KEY } from '@common/decorators/public.decorator';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { AppConfiguration, InjectAppConfig } from 'src/utils-config';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  private readonly logger = new Logger(ApiKeyGuard.name);
+
+  constructor(
+    private readonly reflector: Reflector,
+    @InjectAppConfig() private readonly appConfig: AppConfiguration,
+  ) {}
 
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    console.log('guard', process.env.API_KEY);
+    this.logger.debug('API_KEY', this.appConfig.apiKey);
     //return true if IS_PUBLIC_KEY is found
     //access the routes metadata using the reflector class
     const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
@@ -21,6 +32,6 @@ export class ApiKeyGuard implements CanActivate {
     //to protect those routes that do not have a decorator of @Public
     const request = context.switchToHttp().getRequest<Request>();
     const authHeader = request.header('Authorization');
-    return authHeader === 'secret_key'; //process.env.API_KEY;
+    return authHeader === this.appConfig.apiKey; //process.env.API_KEY;
   }
 }

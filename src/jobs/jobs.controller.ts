@@ -24,14 +24,14 @@ export class JobsController {
 
   @Post()
   @ApiOperation({ summary: 'Create job' })
-  @ApiCreatedResponse({ type: Job })
+  // @ApiCreatedResponse({ type: Job })
   async create(@Body() createJobDto: CreateJobDto): Promise<Job> {
     return await this.jobsService.create(createJobDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Fetch list of jobs' })
-  @ApiOkResponse({ type: Job, isArray: true })
+  // @ApiOperation({ summary: 'Fetch list of jobs' })
+  // @ApiOkResponse({ type: Job, isArray: true })
   async findAll() {
     return await this.jobsService.findAll();
   }
@@ -42,8 +42,11 @@ export class JobsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(+id, updateJobDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateJobDto: UpdateJobDto,
+  ): Promise<Job> {
+    return await this.jobsService.update(id, updateJobDto);
   }
 
   @Delete(':id')
