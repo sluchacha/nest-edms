@@ -2,7 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  Logger
+  Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -17,6 +17,7 @@ import {
 } from '@data-access-dtos/applications';
 import { Application, ApplicationDocument } from './application.entity';
 import { PaginationQueryDto } from '@data-access-dtos/common';
+import * as dot from 'dot-object';
 
 @Injectable()
 export class ApplicationsService {
@@ -31,12 +32,12 @@ export class ApplicationsService {
   ) {}
 
   /**
-   * Throws an error if they do not exist. */
-  /**
    * @summary Checks whether a job and applicant with the specified id's exist.
    * @param jobId string
    * @param applicantId string
    * @returns job and applicant
+   * @throws BadRequestException if a job or applicant with specified id's
+   * do not exist
    */
   private async checkApplicationDependencies(
     jobId: string,
@@ -51,7 +52,8 @@ export class ApplicationsService {
     return { job, applicant };
   }
 
-  /**@summary Creates an application, ONLY if an application with the job id
+  /**
+   * @summary Creates an application, ONLY if an application with the job id
    * and applicant id specified in the DTO does not exist
    * @param id The application id
    * @param createApplicationDto The application object
@@ -66,14 +68,14 @@ export class ApplicationsService {
       applicantId,
     );
 
-    let application = await this.applicationModel
+    const applicationExists = await this.applicationModel
       .findOne({
-        "job._id": job.id,
-        "applicant._id": applicant.id,
+        'job._id': job.id,
+        'applicant._id': applicant.id,
       })
       .exec();
 
-    if (application)
+    if (applicationExists)
       throw new BadRequestException(
         'A similar application has already been recorded for the given job by the said applicant.',
       );
@@ -81,19 +83,21 @@ export class ApplicationsService {
     const { isDisabled, qualifications, ppr, files, documents } =
       createApplicationDto;
 
-    return await this.applicationModel.create({
-      job, 
-      applicant, 
-      isDisabled: createApplicationDto.isDisabled,
-      qualifications: createApplicationDto.qualifications,
-      ppr: createApplicationDto.ppr,
+    const application = new this.applicationModel({
+      job,
+      applicant,
+      isDisabled,
+      qualifications,
+      ppr,
       chapterSix: documents,
-      files: createApplicationDto.files,
+      files,
     });
+
+    return await this.applicationModel.create(application);
   }
 
   /**
-   * @Summary Fetch all applications
+   * @summary Fetch all applications
    * @param paginationQuery PaginationQueryDto(optional)
    * @returns List of applications
    */
@@ -102,13 +106,6 @@ export class ApplicationsService {
 
     const applications = await this.applicationModel
       .find()
-      .populate({
-        path: 'job',
-        select: '-description -__v',
-        populate: { path: 'organization', select: 'code name' },
-      })
-      .populate('applicant', '-__v -createdAt')
-      .select('-__v')
       .sort('createdAt')
       .skip(offset)
       .limit(limit)
@@ -121,20 +118,11 @@ export class ApplicationsService {
    * @returns An application
    */
   async findOne(id: string): Promise<Application> {
-    const application = await this.applicationModel
-      .findById(id)
-      .populate({
-        path: 'job',
-        select: 'organization name noOfVacancies',
-        populate: { path: 'organization', select: 'name' },
-      })
-      .populate('applicant', '-__v -createdAt')
-      .select('-__v')
-      .exec();
-    return application;
+    return await this.applicationModel.findById(id).exec();
   }
 
-  /**Updates an application
+  /**
+   * @summary Updates an application
    * @param id The application id
    * @param updateApplicationDto The updated application object
    * @returns The updated application
@@ -143,26 +131,17 @@ export class ApplicationsService {
     id: string,
     updateApplicationDto: UpdateApplicationDto,
   ): Promise<Application> {
-    const { jobId, applicantId } = updateApplicationDto;
-    const { job, applicant } = await this.checkApplicationDependencies(
-      jobId,
-      applicantId,
-    );
+    // Prepare object to update nested object fields separately
+    // May not really be required in this case but just as a future precaution
+    const { documents } = updateApplicationDto;
+    dot.keepArray = true;
+    let tgt = dot.dot({
+      ...updateApplicationDto,
+      chapterSix: documents,
+    });
 
     const application = await this.applicationModel
-      .findByIdAndUpdate(
-        id,
-        {
-          $set: {
-            job: job.id,
-            applicant: applicant.id,
-            isDisabled: updateApplicationDto.isDisabled,
-            qualifications: updateApplicationDto.qualifications,
-            ppr: updateApplicationDto.ppr,
-          },
-        },
-        { new: true },
-      )
+      .findByIdAndUpdate(id, { $set: tgt }, { new: true })
       .exec();
 
     if (!application)
@@ -173,7 +152,8 @@ export class ApplicationsService {
     return application;
   }
 
-  /**Deletes an application
+  /**
+   * @summary Deletes an application
    * @param id The application id
    * @returns The deleted application
    */
@@ -189,6 +169,7 @@ export class ApplicationsService {
 
     return application;
   }
+
   /**Upload files to folder and update related record
    * @todo NEEDS IMPLEMENTATION USING MULTER
    * @param id The application id
@@ -207,36 +188,27 @@ export class ApplicationsService {
     return application ? true : false;
   }
 
-  /**Finds all applications to an applicant
+  /**
+   * @summary Finds all applications to an applicant
    * @param applicantId The applicant's id
    * @returns List of applications made by the applicant
    */
   async findAllApplicantApplications(applicantId: string): Promise<any> {
     const applications = await this.applicationModel
-      .find({
-        'applicant._id': applicantId,
-      })
-      .populate({
-        path: 'job',
-        select: '-__v',
-        populate: { path: 'organization', select: 'name' },
-      })
-      .select('-__v')
+      .find({ 'applicant._id': applicantId })
       .exec();
 
     return applications;
   }
 
-  /**Finds all applications for a specific job
+  /**
+   * @summary Finds all applications for a specific job
    * @param jobId The job id
    * @returns List of applicants for the job
    */
-  async findAllJobApplicants(jobId: string) {
+  async findAllJobApplications(jobId: string) {
     const applications = await this.applicationModel
-      .find({
-        'job._id': jobId,
-      })
-      .populate('applicant -__v')
+      .find({ 'job._id': jobId })
       .exec();
 
     return applications;

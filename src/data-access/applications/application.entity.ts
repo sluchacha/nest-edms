@@ -1,4 +1,7 @@
-import { Applicant, ApplicantSchema } from '@data-access/applicants/applicant.entity';
+import {
+  Applicant,
+  ApplicantSchema,
+} from '@data-access/applicants/applicant.entity';
 import { Job, JobSchema } from '@data-access/jobs/job.entity';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
@@ -56,11 +59,12 @@ export const FileDocumentSchema = SchemaFactory.createForClass(FileDocument);
 })
 export class Application {
   @ApiProperty({ type: Job, required: true })
-  @Prop({ 
-    // type: MongooseSchema.Types.ObjectId, 
-    // ref: Job.name, 
+  @Prop({
+    // type: MongooseSchema.Types.ObjectId,
+    // ref: Job.name,
     type: JobSchema,
-    required: true })
+    required: true,
+  })
   @Type(() => Job)
   job: Job;
 
@@ -83,10 +87,10 @@ export class Application {
   qualifications: Qualification[];
 
   @ApiProperty({ required: false })
-  @Prop({ maxlength: 255, trim: true, uppercase:true })
+  @Prop({ maxlength: 255, trim: true, uppercase: true })
   ppr: string;
 
-  @ApiProperty({required: false})
+  @ApiProperty({ required: false })
   @Prop([{ type: String, trim: true }])
   chapterSix: string[];
 
@@ -102,4 +106,4 @@ export class Application {
 export type ApplicationDocument = Application & Document;
 
 export const ApplicationSchema = SchemaFactory.createForClass(Application);
-ApplicationSchema.index({ job: 1, applicant: 1 });
+// ApplicationSchema.index({ 'job._id': 1, 'applicant._id': 1 });
