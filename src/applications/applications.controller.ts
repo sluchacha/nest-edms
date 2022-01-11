@@ -26,6 +26,7 @@ import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
 import { Application } from '@data-access/applications/application.entity';
 import { PaginationQueryDto } from '@data-access-dtos/common';
 import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
+import { ValidateObjectIdPipe } from '@common/pipes/validate-object-id.pipe';
 
 @Controller('applications')
 @ApiTags('Applications')
@@ -59,20 +60,50 @@ export class ApplicationsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.applicationsService.findOne(id);
+  @ApiOperation({ summary: 'Fetch single application' })
+  @ApiOkResponse({ type: Application })
+  async findOne(
+    @Param('id', ValidateObjectIdPipe) id: string,
+  ): Promise<Application> {
+    return await this.applicationsService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  @ApiOperation({ summary: 'Update single application' })
+  @ApiOkResponse({ type: Application })
+  async update(
+    @Param('id', ValidateObjectIdPipe) id: string,
     @Body() updateApplicationDto: UpdateApplicationDto,
-  ) {
-    return this.applicationsService.update(id, updateApplicationDto);
+  ): Promise<Application> {
+    return await this.applicationsService.update(id, updateApplicationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.applicationsService.remove(id);
+  @ApiOperation({ summary: 'Delete single application' })
+  @ApiOkResponse({ type: Application })
+  async remove(
+    @Param('id', ValidateObjectIdPipe) id: string,
+  ): Promise<Application> {
+    return await this.applicationsService.remove(id);
+  }
+
+  @Get('applicant/:applicantId')
+  @ApiOperation({ summary: 'Fetch list of applications to a single applicant' })
+  @ApiOkResponse({ type: Application, isArray: true })
+  async findAllApplicantApplications(
+    @Param('applicantId', ValidateObjectIdPipe) applicantId: string,
+  ) {
+    return await this.applicationsService.findAllApplicantApplications(
+      applicantId,
+    );
+  }
+
+  @Get('job/:jobId')
+  @ApiOperation({ summary: 'Fetch list of applications to a specific job' })
+  @ApiOkResponse({ type: Application, isArray: true })
+  async findAllJobApplications(
+    @Param('jobId', ValidateObjectIdPipe) jobId: string,
+  ) {
+    return await this.applicationsService.findAllJobApplications(jobId);
   }
 }

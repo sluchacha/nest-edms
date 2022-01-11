@@ -28,6 +28,8 @@ import { Applicant } from '@data-access/applicants/applicant.entity';
 import { ValidateObjectIdPipe } from '@common/pipes/validate-object-id.pipe';
 import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
 import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
+import { ApplicantSnippetDto } from '@data-access-dtos/applicants/applicant-snippet.dto';
+import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 
 @Controller('applicants')
 @ApiTags('Applicants')
@@ -41,6 +43,13 @@ export class ApplicantsController {
   private readonly logger = new Logger(ApplicantsController.name);
 
   constructor(private readonly applicantsService: ApplicantsService) {}
+
+  @Get('test')
+  @ApiOkResponse({ type: ApplicantSnippetDto })
+  @UseInterceptors(new TransformInterceptor(ApplicantSnippetDto))
+  async test(): Promise<any> {
+    return await this.applicantsService.findOne('61d99fd2d27f5f73e2c93034');
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create applicant' })
@@ -75,7 +84,7 @@ export class ApplicantsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a single applicant' })
+  @ApiOperation({ summary: 'Update single applicant' })
   @ApiOkResponse({ type: Applicant })
   async update(
     @Param('id', ValidateObjectIdPipe) id: string,
@@ -85,7 +94,7 @@ export class ApplicantsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a single applicant' })
+  @ApiOperation({ summary: 'Delete single applicant' })
   @ApiOkResponse({ type: Applicant })
   async remove(
     @Param('id', ValidateObjectIdPipe) id: string,
