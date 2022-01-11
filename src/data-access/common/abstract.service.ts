@@ -1,4 +1,3 @@
-import { MongooseClientSession } from '@common/decorators/transaction-param.decorator';
 import { PaginationQueryDto } from '@data-access-dtos/common/pagination-query.dto';
 import {
   BadRequestException,
@@ -8,33 +7,34 @@ import {
 import { Model } from 'mongoose';
 
 @Injectable()
-export abstract class AbstractService {
+export abstract class AbstractService<T> {
   protected recordName: string = 'record';
   protected constructor(protected readonly model: Model<any>) {}
 
-  async create(
-    dto: any,
-    ref: any,
-    session?: MongooseClientSession,
-  ): Promise<any> {
+  async create(dto: any, ref: any): Promise<T> {
     // Check if record exist
-    let record = await this.model.findOne(ref).session(session);
-    // .exec();
+    let record = await this.model.findOne(ref).exec();
 
     if (record)
       throw new BadRequestException(`The ${this.recordName} already exists`);
 
     record = new this.model(dto);
 
-    return record.save({ session });
+    return await this.model.create(record);
   }
 
-  async findAll(paginationQuery: PaginationQueryDto): Promise<any[]> {
+  async findAll(paginationQuery: PaginationQueryDto): Promise<T[]> {
     const { limit, offset } = paginationQuery;
     return await this.model.find().skip(offset).limit(limit).exec();
   }
 
-  async findOne(id: string): Promise<any> {
+  /**
+   * Finds a single record
+   * @param id
+   * @returns The record if found
+   * @throws NotFoundException if record is not found
+   */
+  async findRecordById(id: string): Promise<T> {
     const record = await this.model.findById(id).exec();
 
     if (!record)
@@ -45,17 +45,10 @@ export abstract class AbstractService {
     return record;
   }
 
-  async update(
-    id: string,
-    dto: any,
-    session?: MongooseClientSession,
-  ): Promise<any> {
-    const record = await this.model.findByIdAndUpdate(
-      id,
-      { $set: dto },
-      { new: true, session },
-    );
-    // .exec();
+  async update(id: string, dto: any): Promise<T> {
+    const record = await this.model
+      .findByIdAndUpdate(id, { $set: dto }, { new: true })
+      .exec();
 
     if (!record)
       throw new NotFoundException(
@@ -65,7 +58,7 @@ export abstract class AbstractService {
     return record;
   }
 
-  async remove(id: string): Promise<any> {
+  async remove(id: string): Promise<T> {
     const record = await this.model.findByIdAndRemove(id).exec();
 
     if (!record)
@@ -74,5 +67,12 @@ export abstract class AbstractService {
       );
 
     return record;
+  }
+
+  async recordExists(id: string): Promise<boolean> {
+    const record = await this.model.findOne({ _id: id }).exec();
+    if (record) return true;
+
+    return false;
   }
 }

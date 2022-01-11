@@ -135,7 +135,7 @@ export class ApplicationsService {
     // May not really be required in this case but just as a future precaution
     const { documents } = updateApplicationDto;
     dot.keepArray = true;
-    let tgt = dot.dot({
+    const tgt = dot.dot({
       ...updateApplicationDto,
       chapterSix: documents,
     });
