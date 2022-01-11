@@ -11,7 +11,10 @@ import {
   UpdateApplicantDto,
 } from '@data-access-dtos/applicants';
 import { Applicant, ApplicantDocument } from './applicant.entity';
-import { ApplicationsService } from '../applications/applications.service';
+import {
+  Application,
+  ApplicationDocument,
+} from '../applications/application.entity';
 import * as dot from 'dot-object';
 
 @Injectable()
@@ -19,7 +22,8 @@ export class ApplicantsService {
   constructor(
     @InjectModel(Applicant.name)
     private readonly applicantModel: Model<ApplicantDocument>,
-    private readonly applicationsService: ApplicationsService,
+    @InjectModel(Application.name)
+    private readonly applicationModel: Model<ApplicationDocument>,
   ) {}
 
   /**
@@ -84,7 +88,7 @@ export class ApplicantsService {
   ): Promise<Applicant> {
     // Prepare object to update nested object fields separately
     dot.keepArray = true;
-    let tgt = dot.dot(updateApplicantDto);
+    const tgt = dot.dot(updateApplicantDto);
 
     const existingApplicant = await this.applicantModel
       .findByIdAndUpdate(id, { $set: tgt }, { new: true })
@@ -108,11 +112,12 @@ export class ApplicantsService {
    * @throws NotFoundException if applicant record is not found
    */
   async remove(id: string): Promise<Applicant> {
-    const flag = await this.applicationsService.checkApplicantHasApplications(
-      id,
-    );
+    // Check for related records - whether an applicant has an application
+    const application = await this.applicationModel
+      .findOne({ 'applicant.id': id })
+      .exec();
 
-    if (flag)
+    if (application)
       throw new BadRequestException(
         'The applicant with the given ID CANNOT be deleted. There is related data.',
       );

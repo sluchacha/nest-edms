@@ -60,8 +60,9 @@ export class OrganizationsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Fetch single organization' })
+  @ApiOkResponse({ type: Organization })
   findOne(@Param('id', ValidateObjectIdPipe) id: string) {
-    return this.organizationsService.findRecordById(id);
+    return this.organizationsService.findOne(id);
   }
 
   @Patch(':id')

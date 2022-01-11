@@ -1,57 +1,94 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateJobDto, UpdateJobDto } from '@data-access-dtos/jobs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Job, JobDocument } from './job.entity';
+import {
+  Organization,
+  OrganizationDocument,
+} from '../organizations/organization.entity';
 import { Model } from 'mongoose';
-import { OrganizationsService } from '@data-access/organizations/organizations.service';
+import { AbstractService } from '@data-access/common/abstract.service';
+import * as dot from 'dot-object';
+import {
+  Application,
+  ApplicationDocument,
+} from '@data-access/applications/application.entity';
 
 @Injectable()
-export class JobsService {
+export class JobsService extends AbstractService<Job> {
+  private readonly logger = new Logger(JobsService.name);
+
   constructor(
     @InjectModel(Job.name) private readonly jobModel: Model<JobDocument>,
-    private readonly organizationService: OrganizationsService,
-  ) {}
+    @InjectModel(Organization.name)
+    private readonly organizationModel: Model<OrganizationDocument>,
+    @InjectModel(Application.name)
+    private readonly applicationModel: Model<ApplicationDocument>,
+  ) {
+    super(jobModel);
+    this.recordName = Job.name;
+  }
+
+  private async checkOrganizationExists(
+    organizationId: string,
+  ): Promise<Organization> {
+    const organization = await this.organizationModel.findById(organizationId);
+
+    if (!organization) {
+      throw new BadRequestException(
+        `The organization with the given ID does not exist`,
+      );
+    }
+
+    return organization;
+  }
 
   async create(createJobDto: CreateJobDto): Promise<Job> {
-    const jobExists = await this.jobModel.findOne({ code: createJobDto.code });
+    const { code, organizationId } = createJobDto;
+    const jobExists = await this.jobModel.findOne({ code });
     if (jobExists)
       throw new BadRequestException(`A job with the given code already exists`);
 
-    // Check that the organization exists
-    const organizationExists = await this.organizationService.findRecordById(
-      createJobDto.organizationId,
-    );
+    const organization = await this.checkOrganizationExists(organizationId);
 
     const job = new this.jobModel({
       ...createJobDto,
-      organization: organizationExists,
+      organization,
     });
 
     return await this.jobModel.create(job);
   }
 
-  async findAll(): Promise<Job[]> {
-    return await this.jobModel.find().exec();
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} job`;
-  }
-
   async update(id: string, updateJobDto: UpdateJobDto): Promise<Job> {
-    return await this.jobModel
-      .findByIdAndUpdate(
-        id,
-        {
-          $set: updateJobDto,
-        },
-        { new: true },
-      )
-      .exec();
+    const { organizationId, ...rest } = updateJobDto;
+
+    dot.keepArray = true;
+    let tgt = dot.dot({ ...rest });
+    let dto = { ...tgt };
+    if (organizationId) {
+      const organization = await this.checkOrganizationExists(organizationId);
+      dto = {
+        ...tgt,
+        organization,
+      };
+    }
+
+    this.logger.debug({ dto });
+    return await super.update(id, dto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} job`;
+  async remove(id: string): Promise<Job> {
+    // Check for related records - tagged in applications
+    const exists = await this.applicationModel
+      .findOne({ 'job._id': id })
+      .exec();
+
+    if (exists)
+      throw new BadRequestException(
+        `The organization with the given ID CANNOT be deleted. There is related data.`,
+      );
+
+    return await super.remove(id);
   }
 
   /**
@@ -65,22 +102,5 @@ export class JobsService {
       .exec();
 
     return jobs;
-  }
-
-  /**
-   * @summary Checks whether an organization has related records to jobs
-   * @param organizationId The organization id
-   * @returns A promise of boolean, true if there are records,
-   * false if no records
-   */
-  async existsAtLeastOneOrganizationJob(
-    organizationId: string,
-  ): Promise<boolean> {
-    const job = await this.jobModel
-      .findOne({ 'organization._id': organizationId })
-      .exec();
-    if (job) return true;
-
-    return false;
   }
 }

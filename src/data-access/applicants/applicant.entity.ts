@@ -70,6 +70,10 @@ export class Applicant {
 
   @ApiProperty()
   @Prop({ type: Date, default: Date.now })
+  updatedAt: Date;
+
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 }
 

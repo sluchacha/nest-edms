@@ -34,8 +34,8 @@ export abstract class AbstractService<T> {
    * @returns The record if found
    * @throws NotFoundException if record is not found
    */
-  async findRecordById(id: string): Promise<T> {
-    const record = await this.model.findById(id).exec();
+  async findOne(id: string): Promise<T> {
+    const record = await this.model.findOne({ _id: id }).exec();
 
     if (!record)
       throw new NotFoundException(
@@ -47,7 +47,11 @@ export abstract class AbstractService<T> {
 
   async update(id: string, dto: any): Promise<T> {
     const record = await this.model
-      .findByIdAndUpdate(id, { $set: dto }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { $set: { ...dto, updatedAt: Date.now() } },
+        { new: true },
+      )
       .exec();
 
     if (!record)

@@ -1,10 +1,10 @@
 import { UpdateOrganizationDto } from '@data-access-dtos/organizations';
 import { AbstractService } from '@data-access/common/abstract.service';
-import { JobsService } from '@data-access/jobs/jobs.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organization, OrganizationDocument } from './organization.entity';
+import { Job, JobDocument } from '@data-access/jobs/job.entity';
 import * as dot from 'dot-object';
 
 @Injectable()
@@ -12,19 +12,22 @@ export class OrganizationsService extends AbstractService<Organization> {
   constructor(
     @InjectModel(Organization.name)
     private readonly organizationModel: Model<OrganizationDocument>,
-    private readonly jobsService: JobsService,
+    @InjectModel(Job.name)
+    private readonly jobModel: Model<JobDocument>,
   ) {
     super(organizationModel);
     this.recordName = Organization.name;
   }
 
   async remove(id: string): Promise<Organization> {
-    // Check if there are related records
-    const exists = await this.jobsService.existsAtLeastOneOrganizationJob(id);
+    // Check for related records - tagged in jobs
+    const exists = await this.jobModel
+      .findOne({ 'organization._id': id })
+      .exec();
 
     if (exists)
       throw new BadRequestException(
-        `Cannot delete the organization with the given ID. Related records exist.`,
+        `The organization with the given ID CANNOT be deleted. There is related data.`,
       );
 
     return await super.remove(id);

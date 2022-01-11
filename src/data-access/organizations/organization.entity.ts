@@ -25,6 +25,14 @@ export class Organization {
   @ApiProperty()
   @Prop({ maxlength: 1024, trim: true })
   description: string;
+
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
+  updatedAt: Date;
+
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
 }
 
 export type OrganizationDocument = Organization & Document;
