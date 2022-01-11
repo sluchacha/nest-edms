@@ -135,7 +135,7 @@ export class ApplicationsService {
     // May not really be required in this case but just as a future precaution
     const { documents } = updateApplicationDto;
     dot.keepArray = true;
-    let tgt = dot.dot({
+    const tgt = dot.dot({
       ...updateApplicationDto,
       chapterSix: documents,
     });
@@ -175,18 +175,6 @@ export class ApplicationsService {
    * @param id The application id
    */
   uploadFiles(id: string) {}
-
-  /**Checks whether an applicant has any application
-   * @param applicantId The applicant's id
-   * @returns true if there is an application, false if there is none
-   */
-  async checkApplicantHasApplications(applicantId: string): Promise<Boolean> {
-    const application = await this.applicationModel
-      .findOne({ 'applicant.id': applicantId })
-      .exec();
-
-    return application ? true : false;
-  }
 
   /**
    * @summary Finds all applications to an applicant

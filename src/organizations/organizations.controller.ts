@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   UseInterceptors,
+  SerializeOptions,
 } from '@nestjs/common';
 
 import { OrganizationsService } from '@data-access/organizations/organizations.service';
@@ -16,52 +17,70 @@ import {
   UpdateOrganizationDto,
 } from '@data-access-dtos/organizations';
 import { PaginationQueryDto } from '@data-access-dtos/common/pagination-query.dto';
-import { TransactionInterceptor } from '@common/interceptors/transaction.interceptor';
 import {
-  MongooseClientSession,
-  TransactionParam,
-} from '@common/decorators/transaction-param.decorator';
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Organization } from '@data-access/organizations/organization.entity';
+import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
+import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
+import { ValidateObjectIdPipe } from '@common/pipes/validate-object-id.pipe';
 
 @Controller('organizations')
+@ApiTags('Organizations')
+@ApplyApiStatus(400, 401, 403, 404, 500)
+@UseInterceptors(MongooseClassSerializerInterceptor(Organization))
+@SerializeOptions({
+  strategy: 'exposeAll',
+  excludePrefixes: ['_', '__'],
+})
 export class OrganizationsController {
   constructor(private readonly organizationsService: OrganizationsService) {}
 
   @Post()
-  @UseInterceptors(TransactionInterceptor)
-  create(
-    @TransactionParam() session: MongooseClientSession,
+  @ApiOperation({ summary: 'Create organization' })
+  @ApiCreatedResponse({ type: Organization })
+  async create(
     @Body() createOrganizationDto: CreateOrganizationDto,
-  ) {
+  ): Promise<Organization> {
     const ref = { code: createOrganizationDto.code };
-    return this.organizationsService.create(
-      createOrganizationDto,
-      ref,
-      session,
-    );
+    return await this.organizationsService.create(createOrganizationDto, ref);
   }
 
   @Get()
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
-    return this.organizationsService.findAll(paginationQuery);
+  @ApiOperation({ summary: 'Fetch list of organizations' })
+  @ApiOkResponse({ type: Organization, isArray: true })
+  async findAll(
+    @Query() paginationQuery: PaginationQueryDto,
+  ): Promise<Organization[]> {
+    return await this.organizationsService.findAll(paginationQuery);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ApiOperation({ summary: 'Fetch single organization' })
+  @ApiOkResponse({ type: Organization })
+  findOne(@Param('id', ValidateObjectIdPipe) id: string) {
     return this.organizationsService.findOne(id);
   }
 
   @Patch(':id')
-  @UseInterceptors(TransactionInterceptor)
-  update(
-    @TransactionParam() session: MongooseClientSession,
-    @Param('id') id: string,
+  @ApiOperation({ summary: 'Update single organization' })
+  @ApiOkResponse({ type: Organization })
+  async update(
+    @Param('id', ValidateObjectIdPipe) id: string,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
-  ) {
-    return this.organizationsService.update(id, updateOrganizationDto, session);
+  ): Promise<Organization> {
+    return await this.organizationsService.update(id, updateOrganizationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.organizationsService.remove(id);
+  @ApiOperation({ summary: 'Delete single organization' })
+  @ApiOkResponse({ type: Organization })
+  async remove(
+    @Param('id', ValidateObjectIdPipe) id: string,
+  ): Promise<Organization> {
+    return await this.organizationsService.remove(id);
   }
 }
