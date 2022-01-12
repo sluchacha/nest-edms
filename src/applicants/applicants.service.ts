@@ -23,9 +23,10 @@ export class ApplicantsService {
   /**
    * @summary Create a new applicant if they do not exist.
    * The National ID must be unique.
-   * @param createApplicantDto CreateApplicantDto
-   * @returns Promise< Applicant >
-   * @throws BadRequestException if applicant with the national id exists
+   * @param {CreateApplicantDto} createApplicantDto fields to create the details of applicant
+   * @returns {(Promise<Applicant>)} Returns the applicant with the created information
+   * @throws {BadRequestException} if applicant with the national id exists
+   * @memberof ApplicantsService
    */
   async create(createApplicantDto: CreateApplicantDto): Promise<Applicant> {
     // Check if applicant exist

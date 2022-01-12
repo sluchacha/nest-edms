@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsString,
+  Length,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -29,6 +30,12 @@ export class CreateUserDto {
   @MaxLength(50)
   @IsNotEmpty()
   email: string;
+
+  @ApiProperty({ example: 'johndoe' })
+  @IsString()
+  @Length(5, 50)
+  @IsNotEmpty()
+  username: string;
 
   @ApiProperty({ example: '12345678' })
   @IsString()

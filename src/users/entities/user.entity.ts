@@ -21,11 +21,17 @@ export class User {
   fullName: string;
 
   @ApiProperty({ example: 'johndoe@gmail.com' })
+  @Prop({
+    unique: true,
+    minlength: 5,
+    maxlength: 50,
+    trim: true,
+    lowercase: true,
+  })
   username: string;
 
   //Method Functions
   register: Function;
-  generateAuthToken: Function;
   validatePassword: Function;
 
   //Actual Properties
@@ -52,6 +58,18 @@ export class User {
   @ApiProperty()
   @Prop({ default: true })
   isActive: boolean;
+
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
+  lastAccessedOn: Date;
+
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
+  updatedAt: Date;
+
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
@@ -60,19 +78,10 @@ UserSchema.virtual('fullName').get(function (this: UserDocument) {
   return `${this.firstName} ${this.lastName}`;
 });
 
-UserSchema.virtual('username').get(function (this: UserDocument) {
-  return `${this.email}`;
-});
-
 UserSchema.methods.register = async function (this: UserDocument) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   return await this.save();
-};
-
-UserSchema.methods.generateAuthToken = function (this: UserDocument) {
-  const payload = { id: this._id, username: this.username };
-  return 'secret_key';
 };
 
 /**

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { Public } from '@common/decorators';
+import { Public } from '@auth/decorators';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
