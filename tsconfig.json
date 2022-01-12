@@ -22,11 +22,9 @@
       "@applications/*": ["src/applications/*"],
       "@auth/*": ["src/auth/*"],
       "@common/*": ["src/common/*"],
-      "@data-access/*": ["src/data-access/*"],
-      "@data-access-dtos/*": ["src/data-access-dtos/*"],
       "@feature-config/*": ["src/feature-config/*"],
       "@files/*": ["src/files/*"],
-      "@jobs/*": ["src/data-access/jobs/jobs/*"],
+      "@jobs/*": ["src/jobs/*"],
       "@organizations/*": ["src/organizations/*"],
       "@users/*": ["src/users/*"]
     }

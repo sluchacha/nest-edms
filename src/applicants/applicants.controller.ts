@@ -11,12 +11,9 @@ import {
   SerializeOptions,
   Logger,
 } from '@nestjs/common';
-import { PaginationQueryDto } from '@data-access-dtos/common/pagination-query.dto';
-import { ApplicantsService } from '../data-access/applicants/applicants.service';
-import {
-  CreateApplicantDto,
-  UpdateApplicantDto,
-} from '@data-access-dtos/applicants';
+import { PaginationQueryDto } from '../common/dto';
+import { ApplicantsService } from './applicants.service';
+import { CreateApplicantDto, UpdateApplicantDto } from './dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -24,12 +21,14 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { Applicant } from '@data-access/applicants/applicant.entity';
-import { ValidateObjectIdPipe } from '@common/pipes/validate-object-id.pipe';
-import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
-import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
-import { ApplicantSnippetDto } from '@data-access-dtos/applicants/applicant-snippet.dto';
-import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
+import { Applicant } from './entities';
+import { ValidateObjectIdPipe } from '@common/pipes';
+import { ApplyApiStatus } from '@common/decorators';
+import { ApplicantSnippetDto } from './dto';
+import {
+  MongooseClassSerializerInterceptor,
+  TransformInterceptor,
+} from '@common/interceptors';
 
 @Controller('applicants')
 @ApiTags('Applicants')

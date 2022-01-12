@@ -10,9 +10,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FilesService } from '@data-access/files/files.service';
-import { CreateFileDto } from '@data-access-dtos/files/create-file.dto';
-import { Public } from '../common/decorators/public.decorator';
+import { FilesService } from './files.service';
+import { CreateFileDto } from '@files/dto';
+import { Public } from '../common/decorators';
 import { Express } from 'express';
 import * as express from 'express';
 import {
@@ -23,7 +23,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { File } from '../data-access/files/file.entity';
+import { File } from './entities/file.entity';
 
 @ApiBearerAuth()
 @ApiTags('Attachments')

@@ -4,7 +4,7 @@ import {
   appConfiguration,
   mongoConfiguration,
   multerConfiguration,
-} from 'src/utils-config';
+} from './configuration';
 
 @Module({
   imports: [

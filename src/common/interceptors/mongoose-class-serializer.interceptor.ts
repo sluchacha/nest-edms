@@ -15,7 +15,7 @@ import { Document } from 'mongoose';
  * @param classToIntercept Type of class
  * @returns A Mongoose ClassSerializerInterceptor
  */
-function MongooseClassSerializerInterceptor(
+export function MongooseClassSerializerInterceptor(
   classToIntercept: Type,
 ): typeof ClassSerializerInterceptor {
   return class Interceptor extends ClassSerializerInterceptor {
@@ -46,4 +46,4 @@ function MongooseClassSerializerInterceptor(
   };
 }
 
-export default MongooseClassSerializerInterceptor;
+// export default MongooseClassSerializerInterceptor;

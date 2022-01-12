@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { ApiKeyGuard } from './guards/api-key.guard';
-import { LoggingMiddleware } from './middleware/logging.middleware';
+import { ApiKeyGuard } from './guards';
+import { LoggingMiddleware } from './middleware';
 
 @Module({
   // providers: [{ provide: APP_GUARD, useClass: ApiKeyGuard }],
