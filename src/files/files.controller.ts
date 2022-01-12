@@ -12,7 +12,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { CreateFileDto } from '@files/dto';
-import { Public } from '../common/decorators';
+import { Public } from '@auth/decorators';
 import { Express } from 'express';
 import * as express from 'express';
 import {

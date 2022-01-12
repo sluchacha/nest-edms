@@ -1,8 +1,9 @@
 import { WrapResponseInterceptor } from '@common/interceptors';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 import * as csrf from 'csrf';
 import * as helmet from 'helmet';
 import * as dotenv from 'dotenv';
@@ -12,6 +13,7 @@ import {
 } from '@feature-config/configuration';
 import { HttpExceptionFilter } from '@common/filters';
 import { TimeoutInterceptor } from '@common/interceptors';
+import { JwtAuthGuard } from '@auth/guards';
 
 function configureSwagger(
   appConfig: AppConfiguration,
@@ -44,12 +46,16 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   configureSwagger(appConfig, app, globalPrefix);
 
-  app.use([helmet()]);
+  app.use([helmet(), cookieParser()]);
 
   app.enableCors({
     allowedHeaders: '*',
     origin: '*',
   });
+
+  // Global guards
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -62,7 +68,7 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
   /* app.useGlobalInterceptors(
     new WrapResponseInterceptor(),
     new TimeoutInterceptor(),

@@ -6,6 +6,8 @@ export const appConfiguration = registerAs('app', () => {
   return {
     environment: process.env.NODE_ENV || 'development',
     apiKey: process.env.API_KEY || 'secret_key',
+    jwtPrivateKey: process.env.JWT_PRIVATE_KEY || 'secret_key',
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || '1h',
     protocol: process.env.APP_PROTOCOL || 'http',
     host: process.env.APP_HOST || 'localhost',
     port: Number(process.env.APP_PORT) || 3000,
