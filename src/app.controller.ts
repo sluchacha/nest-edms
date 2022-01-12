@@ -10,8 +10,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiExcludeController } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { Public } from './common/decorators/public.decorator';
-import { PersonDto } from '@data-access-dtos/common/person.dto';
+import { Public } from '@common/decorators';
+import { PersonDto } from '@common/dto';
 import { Express } from 'express';
 
 @Controller()

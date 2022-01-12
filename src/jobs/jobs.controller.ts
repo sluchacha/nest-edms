@@ -10,8 +10,8 @@ import {
   SerializeOptions,
   Query,
 } from '@nestjs/common';
-import { JobsService } from '@data-access/jobs/jobs.service';
-import { CreateJobDto, UpdateJobDto } from '@data-access-dtos/jobs';
+import { JobsService } from './jobs.service';
+import { CreateJobDto, UpdateJobDto } from './dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -19,9 +19,9 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { Job } from '@data-access/jobs/job.entity';
-import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
-import { PaginationQueryDto } from '@data-access-dtos/common';
+import { Job } from './entities';
+import { MongooseClassSerializerInterceptor } from '@common/interceptors';
+import { PaginationQueryDto } from '@common/dto';
 
 @Controller('jobs')
 @ApiTags('Jobs')

@@ -10,20 +10,18 @@ import {
   SerializeOptions,
   Logger,
 } from '@nestjs/common';
-import { UsersService } from '@data-access/users/users.service';
-import { CreateUserDto, UpdateUserDto } from '@data-access-dtos/users';
-import { Public } from '@common/decorators/public.decorator';
+import { UsersService } from './users.service';
+import { CreateUserDto, UpdateUserDto } from './dto';
+import { Public } from '@common/decorators';
 import {
-  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '@data-access/users/user.entity';
-import { ApplyApiStatus } from '@common/decorators/apply-api-status.decorator';
-import MongooseClassSerializerInterceptor from '@common/interceptors/mongoose-class-serializer.interceptor';
+import { User } from './entities';
+import { ApplyApiStatus } from '@common/decorators';
+import { MongooseClassSerializerInterceptor } from '@common/interceptors';
 
 @Controller('users')
 @ApiTags('Users')
