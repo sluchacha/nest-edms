@@ -13,7 +13,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiExcludeController, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiExcludeController,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { Public } from '@auth/decorators';
 import { PersonDto } from '@common/dto';
@@ -27,6 +33,7 @@ import { User } from '@users/entities';
 import { AuthDto } from '@auth/dto';
 import { AuthService } from '@auth/auth.service';
 import { JwtAuthGuard } from '@auth/guards';
+import { CreateUserDto } from '@users/dto';
 
 @Controller()
 @ApiTags('App')
@@ -34,24 +41,43 @@ import { JwtAuthGuard } from '@auth/guards';
 export class AppController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('register')
+  @ApiOperation({ summary: 'Registration' })
+  @Public()
+  async register(
+    @Body() createUserDto: CreateUserDto,
+    @Res() response: ExpressResponse,
+  ): Promise<any> {
+    const { access_token } = await this.authService.register(createUserDto);
+    // Sending token as a cookie
+    response
+      .cookie('jwt', access_token, {
+        httpOnly: true,
+        domain: 'localhost',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 8),
+      })
+      .send({ access_token, message: `Token successfully created` });
+  }
+
   @HttpCode(200)
+  @Post('login')
+  @ApiOperation({ summary: 'Login' })
   @Public()
   @UseGuards(LocalAuthGuard)
-  @Post('login')
   async login(
     @Request() req: ExpressRequest,
     @Body() authDto: AuthDto,
     @Res() response: ExpressResponse,
   ): Promise<any> {
-    const { access_token: jwt } = await this.authService.login(req.user);
+    const { access_token } = await this.authService.login(req.user);
     // Sending token as a cookie
     response
-      .cookie('jwt', jwt, {
+      .cookie('jwt', access_token, {
         httpOnly: true,
         domain: 'localhost',
         expires: new Date(Date.now() + 1000 * 60 * 60 * 8),
       })
-      .send({ message: `Token successfully created` });
+      .send({ access_token, message: `Token successfully created` });
   }
 
   @Get('protected')
@@ -65,42 +91,18 @@ export class AppController {
     return 'This route is Public hence not protected';
   }
 
-  /** Must be called from front-end in order to logout
+  /**
+   * @summary Must be called from front-end in order to logout
    * as the cookie is not accessible from the front-end
    */
+  @HttpCode(200)
   @Post('logout')
+  @ApiOperation({ summary: 'Logout' })
   logout(@Res({ passthrough: true }) response: ExpressResponse) {
     response.clearCookie('jwt');
 
     return { message: 'Successfully logged out' };
   }
-
-  /* @Public()
-  @Get('hello')
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Public()
-  @Get('sample')
-  getSampleDocs() {
-    const data = [
-      { id: 1, name: 'Stephen' },
-      { id: 2, name: 'John' },
-    ];
-
-    console.table(data);
-
-    return data;
-  } */
-
-  /* @Public()
-  @Post()
-  @UseInterceptors(ClassSerializerInterceptor)
-  create(@Body() person: PersonDto) {
-    console.log(person);
-    return person;
-  } */
 
   /* @Public()
   @Post()
