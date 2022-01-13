@@ -84,6 +84,19 @@ UserSchema.methods.register = async function (this: UserDocument) {
   return await this.save();
 };
 
+/* UserSchema.pre('save', function (next: mongoose.HookNextFunction) {
+  try {
+    if (!this.isModified('password')) {
+      return next();
+    }
+    const salt = await bcrypt.genSalt();
+    this['password'] = await bcrypt.hash(this['password'], salt);
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}); */
+
 /**
  * @summary Confirm if password is a valid password
  * @param {The users entered password} password

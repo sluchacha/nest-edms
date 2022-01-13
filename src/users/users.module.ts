@@ -10,6 +10,14 @@ import { UsersService } from './users.service';
       {
         name: User.name,
         schema: UserSchema,
+        /* useFactory: () => {
+          const schema = UserSchema;
+          // schema.plugin(require(''));
+          schema.pre('save', function () {
+            console.log('Hello from pre save');
+          });
+          return schema;
+        }, */
       },
     ]),
   ],

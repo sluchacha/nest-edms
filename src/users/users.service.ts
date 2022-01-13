@@ -44,7 +44,7 @@ export class UsersService {
   /**
    * @summary Returns a user by their unique username or undefined
    * @param {string} username username of user, not case sensitive
-   * @returns {(Promise<User | undefined>)}
+   * @returns {(Promise<UserDocument | undefined>)}
    * @memberof UsersService
    */
   async findOneByUsername(username: string): Promise<UserDocument | undefined> {
@@ -56,7 +56,7 @@ export class UsersService {
   /**
    * @summary Returns a user by their unique email or undefined
    * @param {string} email email of user, not case sensitive
-   * @returns {(Promise<User | undefined>)}
+   * @returns {(Promise<UserDocument | undefined>)}
    * @memberof UsersService
    */
   async findOneByEmail(email: string): Promise<UserDocument | undefined> {
@@ -65,8 +65,16 @@ export class UsersService {
     return undefined;
   }
 
-  async findOneById(id: string): Promise<User> {
-    return await this.userModel.findById(id).exec();
+  /**
+   * @summary Returns a user by their unique id
+   * @param {string} id user id
+   * @returns {(Promise<User>)}
+   * @memberof UsersService
+   */
+  async findOneById(id: string): Promise<UserDocument | undefined> {
+    const user = await this.userModel.findById(id).exec();
+    if (user) return user;
+    return undefined;
   }
 
   async findOneByCondition(filterCondition: any): Promise<User> {
