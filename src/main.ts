@@ -25,6 +25,11 @@ function configureSwagger(
     .setDescription('Electronic document management system API')
     .setVersion('1.0.0')
     .addServer(appConfig.domain, 'development')
+    /* .addCookieAuth('cookieAuth', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'jwt',
+    }) */
     .build();
 
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerDocOptions);

@@ -31,7 +31,6 @@ export class User {
   username: string;
 
   //Method Functions
-  register: Function;
   validatePassword: Function;
 
   //Actual Properties
@@ -78,24 +77,26 @@ UserSchema.virtual('fullName').get(function (this: UserDocument) {
   return `${this.firstName} ${this.lastName}`;
 });
 
-UserSchema.methods.register = async function (this: UserDocument) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  return await this.save();
-};
-
-/* UserSchema.pre('save', function (next: mongoose.HookNextFunction) {
+UserSchema.pre<UserDocument>('save', function (next: Function) {
   try {
-    if (!this.isModified('password')) {
+    const user = this;
+    if (!user.isModified('password')) {
       return next();
     }
-    const salt = await bcrypt.genSalt();
-    this['password'] = await bcrypt.hash(this['password'], salt);
-    return next();
+    bcrypt.genSalt(10, (err: Error, salt: string) => {
+      if (err) return next(err);
+
+      bcrypt.hash(user.password, salt, function (err: Error, hash: string) {
+        if (err) return next(err);
+
+        user.password = hash;
+        next();
+      });
+    });
   } catch (err) {
-    return next(err);
+    next(err);
   }
-}); */
+});
 
 /**
  * @summary Confirm if password is a valid password
