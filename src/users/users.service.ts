@@ -27,8 +27,7 @@ export class UsersService {
     if (exists) throw new BadRequestException('The user is already registered');
 
     const user = new this.userModel(createUserDto);
-
-    return await user.register();
+    return this.userModel.create(user);
   }
 
   /**
