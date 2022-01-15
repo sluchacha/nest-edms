@@ -2,21 +2,15 @@ import { Organization, OrganizationSchema } from '@organizations/entities';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-
-enum JobStatus {
-  NOT_PUBLISHED = 'NOT_PUBLISHED',
-  ACCEPTING_APPLICATIONS = 'ACCEPTING_APPLICATIONS',
-  SHORT_LISTING = 'SHORT_LISTING',
-  CONDUCTING_INTERVIEWS = 'CONDUCTING_INTERVIEWS',
-  CLOSED = 'CLOSED',
-  ARCHIVED = 'ARCHIVED',
-}
+import { Document } from 'mongoose';
+import { JobStatus } from '@jobs/enums';
 
 @Schema({
   toJSON: {
     virtuals: true,
   },
+  discriminatorKey: 'status',
+  timestamps: true,
 })
 export class Job {
   @ApiProperty()
@@ -41,7 +35,7 @@ export class Job {
   @Prop({ required: true, max: 500 })
   noOfVacancies: number;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ type: Organization, required: false })
   @Prop({
     type: OrganizationSchema,
     required: true,
@@ -54,16 +48,14 @@ export class Job {
   datePublished: Date;
 
   @ApiProperty()
-  @Prop({ default: JobStatus.NOT_PUBLISHED })
+  @Prop({
+    required: true,
+    trim: true,
+    uppercase: true,
+    enum: JobStatus,
+    default: JobStatus.NOT_PUBLISHED,
+  })
   status: JobStatus;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  updatedAt: Date;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
 }
 
 export type JobDocument = Job & Document;

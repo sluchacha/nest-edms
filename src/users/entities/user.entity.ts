@@ -3,6 +3,7 @@ import { Exclude, Transform } from 'class-transformer';
 import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '@users/enums';
 
 export type UserDocument = User & Document;
 
@@ -11,6 +12,8 @@ export type UserDocument = User & Document;
     getters: true,
     virtuals: true,
   },
+  discriminatorKey: 'role',
+  timestamps: true,
 })
 export class User {
   @Transform(({ value }) => value.toString())
@@ -22,9 +25,10 @@ export class User {
 
   @ApiProperty({ example: 'johndoe@gmail.com' })
   @Prop({
-    unique: true,
     minlength: 5,
     maxlength: 50,
+    unique: true,
+    required: true,
     trim: true,
     lowercase: true,
   })
@@ -42,7 +46,13 @@ export class User {
   @Exclude()
   lastName: string;
 
-  @Prop({ unique: true, maxlength: 50, required: true, lowercase: true })
+  @Prop({
+    maxlength: 50,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  })
   @Exclude()
   email: string;
 
@@ -51,8 +61,14 @@ export class User {
   password: string;
 
   @ApiProperty({ example: 'Admin' })
-  @Prop({ required: true, trim: true, uppercase: true })
-  role: string;
+  @Prop({
+    required: true,
+    trim: true,
+    uppercase: true,
+    enum: Role,
+    default: Role.GUEST,
+  })
+  role: Role;
 
   @ApiProperty()
   @Prop({ default: true })
@@ -61,14 +77,6 @@ export class User {
   @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   lastAccessedOn: Date;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  updatedAt: Date;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);

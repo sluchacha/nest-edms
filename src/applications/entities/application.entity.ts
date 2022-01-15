@@ -2,63 +2,24 @@ import { Applicant, ApplicantSchema } from '@applicants/entities';
 import { Job, JobSchema } from '@jobs/entities';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Transform, Type } from 'class-transformer';
+import { Document, ObjectId } from 'mongoose';
+import { Qualification, QualificationSchema } from './qualification.entity';
+import { FileDocument, FileDocumentSchema } from './file-document.entity';
 
-@Schema({ _id: false })
-export class Qualification {
-  @ApiProperty()
-  @Prop({ required: true, trim: true, uppercase: true })
-  institution: string;
-
-  @ApiProperty()
-  @Prop({ required: true, trim: true, uppercase: true })
-  award: string;
-
-  @ApiProperty()
-  @Prop({ required: true, trim: true, uppercase: true })
-  title: string;
-
-  @ApiProperty()
-  @Prop({ required: true, trim: true, uppercase: true })
-  grade: string;
-
-  @ApiProperty()
-  @Prop({ required: true, trim: true })
-  attainedYear: number;
-}
-
-// Generate a Mongoose Schema before use as Subdocument
-export const QualificationSchema = SchemaFactory.createForClass(Qualification);
-
-@Schema({ _id: false })
-export class FileDocument {
-  @ApiProperty()
-  @Prop({ required: true, trim: true, uppercase: true })
-  title: string;
-
-  @ApiProperty()
-  @Prop({ required: true, trim: true })
-  filename: string;
-
-  @ApiProperty()
-  @Prop({ required: true, trim: true })
-  uri: string;
-}
-
-// Generate a Mongoose Schema before use as Subdocument
-export const FileDocumentSchema = SchemaFactory.createForClass(FileDocument);
-
+// We have each schema in it's own file (Open-Closed Principle)
 @Schema({
   toJSON: {
     virtuals: true,
   },
+  timestamps: true,
 })
 export class Application {
+  @Transform(({ value }) => value.toString())
+  _id: ObjectId;
+
   @ApiProperty({ type: Job, required: true })
   @Prop({
-    // type: MongooseSchema.Types.ObjectId,
-    // ref: Job.name,
     type: JobSchema,
     required: true,
   })
@@ -67,8 +28,6 @@ export class Application {
 
   @ApiProperty({ type: Applicant, required: true })
   @Prop({
-    // type: MongooseSchema.Types.ObjectId,
-    // ref: Applicant.name,
     type: ApplicantSchema,
     required: true,
   })
@@ -94,17 +53,8 @@ export class Application {
   @ApiProperty({ type: FileDocument, isArray: true, required: false })
   @Prop({ type: [FileDocumentSchema], default: [] })
   files: FileDocument[];
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  updatedAt: Date;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
 }
 
 export type ApplicationDocument = Application & Document;
 
 export const ApplicationSchema = SchemaFactory.createForClass(Application);
-// ApplicationSchema.index({ 'job._id': 1, 'applicant._id': 1 });

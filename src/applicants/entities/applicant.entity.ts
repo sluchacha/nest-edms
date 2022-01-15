@@ -2,28 +2,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { Document, ObjectId } from 'mongoose';
+import { Region, RegionSchema } from './region.entity';
 
-@Schema({ _id: false })
-export class Region {
-  @ApiProperty({ required: false })
-  @Prop({ maxlength: 50, required: false, trim: true, uppercase: true })
-  county: string;
-
-  @ApiProperty({ required: false })
-  @Prop({ maxlength: 50, required: false, trim: true, uppercase: true })
-  subcounty: string;
-
-  @ApiProperty({ required: false })
-  @Prop({ maxlength: 50, required: false, trim: true, uppercase: true })
-  ward: string;
-}
-
-export const RegionSchema = SchemaFactory.createForClass(Region);
-
+// We have each schema in it's own file (Open-Closed Principle)
 @Schema({
   toJSON: {
     virtuals: true,
   },
+  timestamps: true,
 })
 export class Applicant {
   @Transform(({ value }) => value.toString())
@@ -67,14 +53,6 @@ export class Applicant {
   @Prop({ type: RegionSchema })
   @Type(() => Region)
   region: Region;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  updatedAt: Date;
-
-  @ApiProperty()
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
 }
 
 export type ApplicantDocument = Applicant & Document;

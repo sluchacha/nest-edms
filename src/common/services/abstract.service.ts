@@ -47,11 +47,7 @@ export abstract class AbstractService<T> {
 
   async update(id: string, dto: any): Promise<T> {
     const record = await this.model
-      .findByIdAndUpdate(
-        id,
-        { $set: { ...dto, updatedAt: Date.now() } },
-        { new: true },
-      )
+      .findByIdAndUpdate(id, { $set: dto }, { new: true })
       .exec();
 
     if (!record)
