@@ -65,6 +65,7 @@ export class UpdateApplicationDto {
   })
   @IsArray()
   get documents(): ChapterSix[] {
+    if (!this.chapterSix) return undefined;
     return this.chapterSix.map((a) => ChapterSix[toUpper(a)]);
   }
 }

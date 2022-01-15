@@ -51,7 +51,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   password_confirm: string;
 
-  @ApiProperty({ enum: Role, example: Role.Admin })
+  @ApiProperty({ enum: Role, example: Role.ADMIN })
   @IsEnum(Role, { message: `Role must be one of these ${Object.keys(Role)}` })
   @Transform(({ value }) => toUpper(value))
   @IsNotEmpty()

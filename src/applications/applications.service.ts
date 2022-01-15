@@ -125,17 +125,25 @@ export class ApplicationsService {
     id: string,
     updateApplicationDto: UpdateApplicationDto,
   ): Promise<Application> {
+    const { documents, chapterSix, ...rest } = updateApplicationDto;
+
     // Prepare object to update nested object fields separately
     // May not really be required in this case but just as a future precaution
-    const { documents } = updateApplicationDto;
     dot.keepArray = true;
-    const tgt = dot.dot({
-      ...updateApplicationDto,
-      chapterSix: documents,
-    });
+    const tgt = dot.dot({ ...rest });
+    let dto = { ...tgt };
+
+    if (documents) {
+      dto = dot.dot({
+        ...tgt,
+        chapterSix: documents,
+      });
+    }
+
+    this.logger.debug({ dto });
 
     const application = await this.applicationModel
-      .findByIdAndUpdate(id, { $set: tgt }, { new: true })
+      .findByIdAndUpdate(id, { $set: dto }, { new: true })
       .exec();
 
     if (!application)
