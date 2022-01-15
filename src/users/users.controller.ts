@@ -11,7 +11,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto, UserSnippetDto } from './dto';
 import { Public } from '@auth/decorators';
 import {
   ApiCreatedResponse,
@@ -21,12 +21,18 @@ import {
 } from '@nestjs/swagger';
 import { User } from './entities';
 import { ApplyApiStatus } from '@common/decorators';
-import { MongooseClassSerializerInterceptor } from '@common/interceptors';
+import {
+  MongooseClassSerializerInterceptor,
+  TransformInterceptor,
+} from '@common/interceptors';
 
 @Controller('users')
 @ApiTags('Users')
 @ApplyApiStatus(400, 401, 403, 404, 500)
-@UseInterceptors(MongooseClassSerializerInterceptor(User))
+@UseInterceptors(
+  MongooseClassSerializerInterceptor(User),
+  new TransformInterceptor(UserSnippetDto),
+)
 @SerializeOptions({
   strategy: 'exposeAll',
   excludePrefixes: ['_', '__'],
@@ -39,7 +45,7 @@ export class UsersController {
   @Public()
   @Post()
   @ApiOperation({ summary: 'Register a new application user' })
-  @ApiCreatedResponse({ type: User })
+  @ApiCreatedResponse({ type: UserSnippetDto })
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     await new Promise((resolve) => setTimeout(resolve, 5000));
     return await this.usersService.create(createUserDto);
@@ -48,25 +54,34 @@ export class UsersController {
   @Public()
   @Get()
   @ApiOperation({ summary: 'Fetch all users' })
-  @ApiOkResponse({ type: User, isArray: true })
+  @ApiOkResponse({ type: UserSnippetDto, isArray: true })
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
   @Public()
   @Get(':id')
+  @ApiOperation({ summary: 'Fetch single user' })
+  @ApiOkResponse({ type: UserSnippetDto })
   async findOne(@Param('id') id: string): Promise<User> {
-    return await this.usersService.findOneById(id);
+    return await this.usersService.findOne(id);
   }
 
   @Public()
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @ApiOperation({ summary: 'Update single user' })
+  @ApiOkResponse({ type: UserSnippetDto })
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    return await this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @ApiOperation({ summary: 'Delete single user' })
+  @ApiOkResponse({ type: UserSnippetDto })
+  async remove(@Param('id') id: string): Promise<User> {
+    return await this.usersService.remove(id);
   }
 }

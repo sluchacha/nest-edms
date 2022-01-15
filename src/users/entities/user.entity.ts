@@ -23,17 +23,6 @@ export class User {
   @ApiProperty({ example: 'John Doe' })
   fullName: string;
 
-  @ApiProperty({ example: 'johndoe@gmail.com' })
-  @Prop({
-    minlength: 5,
-    maxlength: 50,
-    unique: true,
-    required: true,
-    trim: true,
-    lowercase: true,
-  })
-  username: string;
-
   //Method Functions
   validatePassword: Function;
 
@@ -46,6 +35,7 @@ export class User {
   @Exclude()
   lastName: string;
 
+  @ApiProperty({ example: 'johndoe@gmail.com' })
   @Prop({
     maxlength: 50,
     required: true,
@@ -53,7 +43,6 @@ export class User {
     trim: true,
     lowercase: true,
   })
-  @Exclude()
   email: string;
 
   @Prop({ required: true })

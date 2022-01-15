@@ -14,10 +14,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUserLocal(username: string, password: string): Promise<any> {
+  async validateUserLocal(email: string, password: string): Promise<any> {
     try {
       let user: UserDocument | undefined =
-        await this.usersService.findOneByUsername(username);
+        await this.usersService.findOneByEmail(email);
 
       if (!user) return undefined;
 

@@ -10,34 +10,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-
-export enum Gender {
-  Male = 'Male',
-  Female = 'Female',
-}
-
-export enum MaritalStatus {
-  Married = 'Married',
-  Single = 'Single',
-  Divorced = 'Divorced',
-}
-
-export class RegionDto {
-  @ApiProperty({ example: 'Busia', required: false })
-  @IsOptional()
-  @IsString()
-  readonly county: string;
-
-  @ApiProperty({ example: 'Nambale', required: false })
-  @IsOptional()
-  @IsString()
-  readonly subcounty: string;
-
-  @ApiProperty({ example: 'Nambale Township', required: false })
-  @IsOptional()
-  @IsString()
-  readonly ward: string;
-}
+import { Gender, MaritalStatus } from '../enums';
+import { RegionDto } from './region.dto';
 
 export class CreateApplicantDto {
   @ApiProperty({

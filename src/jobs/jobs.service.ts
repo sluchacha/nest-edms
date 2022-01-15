@@ -57,7 +57,7 @@ export class JobsService extends AbstractService<Job> {
     const { organizationId, ...rest } = updateJobDto;
 
     dot.keepArray = true;
-    let tgt = dot.dot({ ...rest });
+    let tgt = dot.dot(rest);
     let dto = { ...tgt };
     if (organizationId) {
       const organization = await this.checkOrganizationExists(organizationId);
@@ -66,8 +66,6 @@ export class JobsService extends AbstractService<Job> {
         organization,
       };
     }
-
-    this.logger.debug({ dto });
     return await super.update(id, dto);
   }
 
