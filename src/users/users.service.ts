@@ -1,8 +1,14 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User, UserDocument } from './entities';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as dot from 'dot-object';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +20,7 @@ export class UsersService {
 
   /**
    * @summary Creates a user
-   * @param {CreateUserDto} createUserDto user details, the username and email
+   * @param {CreateUserDto} createUserDto user details, the email
    * must be unique
    * @returns {Promise<User>} The user with created details or throws an error
    * @throws {BadRequestException} If the user is already registered
@@ -41,18 +47,6 @@ export class UsersService {
   }
 
   /**
-   * @summary Returns a user by their unique username or undefined
-   * @param {string} username username of user, not case sensitive
-   * @returns {(Promise<UserDocument | undefined>)}
-   * @memberof UsersService
-   */
-  async findOneByUsername(username: string): Promise<UserDocument | undefined> {
-    const user = await this.userModel.findOne({ username }).exec();
-    if (user) return user;
-    return undefined;
-  }
-
-  /**
    * @summary Returns a user by their unique email or undefined
    * @param {string} email email of user, not case sensitive
    * @returns {(Promise<UserDocument | undefined>)}
@@ -76,15 +70,42 @@ export class UsersService {
     return undefined;
   }
 
+  async findOne(id: string): Promise<User> {
+    return await this.userModel.findOne({ _id: id }).exec();
+  }
+
   async findOneByCondition(filterCondition: any): Promise<User> {
     return await this.userModel.findOne({ $where: filterCondition }).exec();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    // Prepare object to update nested object fields separately
+    dot.keepArray = true;
+    const tgt = dot.dot(updateUserDto);
+
+    const user = await this.userModel
+      .findByIdAndUpdate(id, { $set: tgt }, { new: true })
+      .exec();
+
+    if (!user)
+      throw new NotFoundException(`The user with the given id was not found`);
+
+    return user;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  /**
+   * summary Delete a user
+   * @param {string} id
+   * @returns {(Promise<User>)} The deleted user
+   * @todo Check for related records before deleting
+   */
+  async remove(id: string): Promise<User> {
+    const user = await this.userModel.findByIdAndRemove(id).exec();
+
+    if (!user) {
+      throw new BadRequestException('The user with the given id was not found');
+    }
+
+    return user;
   }
 }
