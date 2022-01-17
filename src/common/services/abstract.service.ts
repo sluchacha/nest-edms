@@ -1,10 +1,10 @@
-import { PaginationQueryDto } from '../dto';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
+import { PaginationQueryDto } from '../dto';
 
 @Injectable()
 export abstract class AbstractService<T> {

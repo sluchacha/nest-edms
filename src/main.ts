@@ -1,19 +1,19 @@
-import { WrapResponseInterceptor } from '@common/interceptors';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import * as csrf from 'csrf';
 import * as helmet from 'helmet';
 import * as dotenv from 'dotenv';
+import { AppModule } from './app.module';
+import { WrapResponseInterceptor } from './common/interceptors';
 import {
   AppConfiguration,
   appConfiguration,
-} from '@feature-config/configuration';
-import { HttpExceptionFilter } from '@common/filters';
-import { TimeoutInterceptor } from '@common/interceptors';
-import { JwtAuthGuard } from '@auth/guards';
+} from './feature-config/configuration';
+import { HttpExceptionFilter } from './common/filters';
+import { TimeoutInterceptor } from './common/interceptors';
+import { JwtAuthGuard } from './auth/guards';
 
 function configureSwagger(
   appConfig: AppConfiguration,

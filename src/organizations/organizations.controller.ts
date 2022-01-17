@@ -10,20 +10,19 @@ import {
   UseInterceptors,
   SerializeOptions,
 } from '@nestjs/common';
-
-import { OrganizationsService } from './organizations.service';
-import { CreateOrganizationDto, UpdateOrganizationDto } from './dto';
-import { PaginationQueryDto } from '@common/dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { Organization } from '@organizations/entities';
-import { ApplyApiStatus } from '@common/decorators';
-import { MongooseClassSerializerInterceptor } from '@common/interceptors';
-import { ValidateObjectIdPipe } from '@common/pipes';
+import { OrganizationsService } from './organizations.service';
+import { CreateOrganizationDto, UpdateOrganizationDto } from './dto';
+import { PaginationQueryDto } from '../common/dto';
+import { Organization } from '../organizations/entities';
+import { ApplyApiStatus } from '../common/decorators';
+import { MongooseClassSerializerInterceptor } from '../common/interceptors';
+import { ValidateObjectIdPipe } from '../common/pipes';
 
 @Controller('organizations')
 @ApiTags('Organizations')

@@ -1,7 +1,7 @@
-import { USER_PERMISSIONS_KEY } from '../decorators';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { USER_PERMISSIONS_KEY } from '../decorators';
 /**
  * Permission guard
  */

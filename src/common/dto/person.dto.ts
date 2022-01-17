@@ -9,7 +9,7 @@ import {
   IsOptional,
   ArrayMinSize,
 } from 'class-validator';
-import { QualificationDto } from '@applications/dto';
+import { QualificationDto } from '../../applications/dto';
 
 export class PersonDto {
   @IsString()

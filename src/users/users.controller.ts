@@ -10,21 +10,20 @@ import {
   SerializeOptions,
   Logger,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto, UserSnippetDto } from './dto';
-import { Public } from '@auth/decorators';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { UsersService } from './users.service';
+import { CreateUserDto, UpdateUserDto, UserSnippetDto } from './dto';
 import { User } from './entities';
-import { ApplyApiStatus } from '@common/decorators';
+import { ApplyApiStatus } from '../common/decorators';
 import {
   MongooseClassSerializerInterceptor,
   TransformInterceptor,
-} from '@common/interceptors';
+} from '../common/interceptors';
 
 @Controller('users')
 @ApiTags('Users')
@@ -42,7 +41,6 @@ export class UsersController {
 
   constructor(private readonly usersService: UsersService) {}
 
-  @Public()
   @Post()
   @ApiOperation({ summary: 'Register a new application user' })
   @ApiCreatedResponse({ type: UserSnippetDto })
@@ -51,7 +49,6 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
-  @Public()
   @Get()
   @ApiOperation({ summary: 'Fetch all users' })
   @ApiOkResponse({ type: UserSnippetDto, isArray: true })
@@ -59,7 +56,6 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Fetch single user' })
   @ApiOkResponse({ type: UserSnippetDto })
@@ -67,7 +63,6 @@ export class UsersController {
     return await this.usersService.findOne(id);
   }
 
-  @Public()
   @Patch(':id')
   @ApiOperation({ summary: 'Update single user' })
   @ApiOkResponse({ type: UserSnippetDto })

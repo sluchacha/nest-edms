@@ -11,10 +11,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
-import { CreateFileDto } from '@files/dto';
-import { Public } from '@auth/decorators';
-import { Express } from 'express';
-import * as express from 'express';
+import { Public } from '../auth/decorators';
+import { Express, Response as ExpressResponse } from 'express';
 import {
   ApiBearerAuth,
   ApiConsumes,
@@ -48,7 +46,7 @@ export class FilesController {
     status: 200,
     description: 'The found file',
   })
-  download(@Param('fileId') fileId: string, @Res() res: express.Response) {
+  download(@Param('fileId') fileId: string, @Res() res: ExpressResponse) {
     let item = this.filesService.download(fileId);
     res.set({
       'Content-Type': `${item.mimetype}`,

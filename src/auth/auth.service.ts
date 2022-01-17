@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '@users/dto';
-import { UserDocument } from '@users/entities';
-import { UsersService } from '@users/users.service';
 import * as _ from 'lodash';
+import { CreateUserDto } from '../users/dto';
+import { UserDocument } from '../users/entities';
+import { UsersService } from '../users/users.service';
 import { JwtPayload } from './types';
 
 @Injectable()
@@ -82,5 +82,9 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async findOne(id: string) {
+    return await this.usersService.findOne(id);
   }
 }

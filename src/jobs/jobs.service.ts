@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateJobDto, UpdateJobDto } from './dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Job, JobDocument } from './entities';
-import { Organization, OrganizationDocument } from '@organizations/entities';
 import { Model } from 'mongoose';
-import { AbstractService } from '@common/services';
 import * as dot from 'dot-object';
-import { Application, ApplicationDocument } from '@applications/entities';
+import { Job, JobDocument } from './entities';
+import { Organization, OrganizationDocument } from '../organizations/entities';
+import { AbstractService } from '../common/services';
+import { Application, ApplicationDocument } from '../applications/entities';
 
 @Injectable()
 export class JobsService extends AbstractService<Job> {

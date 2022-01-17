@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Job, JobSchema } from '@jobs/entities';
+import { Job, JobSchema } from '../jobs/entities';
 import { Organization, OrganizationSchema } from './entities';
 import { OrganizationsController } from './organizations.controller';
 import { OrganizationsService } from './organizations.service';

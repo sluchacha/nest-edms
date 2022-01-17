@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ApplicantsModule } from '@applicants/applicants.module';
-import { ApplicationsModule } from '@applications/applications.module';
-import { JobsModule } from '@jobs/jobs.module';
-import { OrganizationsModule } from '@organizations/organizations.module';
-import { CommonModule } from '@common/common.module';
-import { FilesModule } from '@files/files.module';
-import { UsersModule } from '@users/users.module';
-import { AuthModule } from '@auth/auth.module';
-import { FeatureConfigModule } from '@feature-config/feature-config.module';
+import { ApplicantsModule } from './applicants/applicants.module';
+import { ApplicationsModule } from './applications/applications.module';
+import { JobsModule } from './jobs/jobs.module';
+import { OrganizationsModule } from './organizations/organizations.module';
+import { CommonModule } from './common/common.module';
+import { FilesModule } from './files/files.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { FeatureConfigModule } from './feature-config/feature-config.module';
 import {
   MongoConfiguration,
   mongoConfiguration,

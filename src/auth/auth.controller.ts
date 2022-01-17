@@ -8,15 +8,16 @@ import {
   UseGuards,
   Get,
   Logger,
+  Req,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import {
   Response as ExpressResponse,
   Request as ExpressRequest,
 } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
 import { Public } from './decorators';
-import { CreateUserDto } from '@users/dto';
+import { CreateUserDto } from '../users/dto';
 import { LocalAuthGuard } from './guards';
 import { AuthDto } from './dto';
 
@@ -87,5 +88,13 @@ export class AuthController {
     response.clearCookie('jwt');
 
     return { message: 'Successfully logged out' };
+  }
+
+  @Get('profile')
+  @ApiOperation({ summary: `Fetch currently logged in user's profile` })
+  async getProfile(@Req() req: ExpressRequest) {
+    const user: any = req.user;
+
+    return await this.authService.findOne(user.id);
   }
 }

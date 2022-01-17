@@ -1,9 +1,9 @@
-import { Application, ApplicationSchema } from '@applications/entities';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ApplicantsController } from './applicants.controller';
 import { ApplicantsService } from './applicants.service';
 import { Applicant, ApplicantSchema } from './entities';
+import { Application, ApplicationSchema } from '../applications/entities';
 
 @Module({
   imports: [
