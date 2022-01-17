@@ -1,7 +1,7 @@
-import { Application, ApplicationSchema } from '@applications/entities';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Organization, OrganizationSchema } from '@organizations/entities';
+import { Application, ApplicationSchema } from '../applications/entities';
+import { Organization, OrganizationSchema } from '../organizations/entities';
 import { Job, JobSchema } from './entities';
 import { JobsController } from './jobs.controller';
 import { JobsService } from './jobs.service';

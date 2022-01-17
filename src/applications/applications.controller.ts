@@ -10,8 +10,6 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApplicationsService } from './applications.service';
-import { CreateApplicationDto, UpdateApplicationDto } from './dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -19,11 +17,13 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApplyApiStatus } from '@common/decorators';
-import { Application } from '@applications/entities';
-import { PaginationQueryDto } from '@common/dto';
-import { MongooseClassSerializerInterceptor } from '@common/interceptors';
-import { ValidateObjectIdPipe } from '@common/pipes';
+import { ApplicationsService } from './applications.service';
+import { CreateApplicationDto, UpdateApplicationDto } from './dto';
+import { ApplyApiStatus } from '../common/decorators';
+import { Application } from '../applications/entities';
+import { PaginationQueryDto } from '../common/dto';
+import { MongooseClassSerializerInterceptor } from '../common/interceptors';
+import { ValidateObjectIdPipe } from '../common/pipes';
 
 @Controller('applications')
 @ApiTags('Applications')

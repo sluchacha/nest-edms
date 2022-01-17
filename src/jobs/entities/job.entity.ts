@@ -1,9 +1,9 @@
-import { Organization, OrganizationSchema } from '@organizations/entities';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { Document } from 'mongoose';
-import { JobStatus } from '@jobs/enums';
+import { JobStatus } from '../enums';
+import { Organization, OrganizationSchema } from '../../organizations/entities';
 
 @Schema({
   toJSON: {

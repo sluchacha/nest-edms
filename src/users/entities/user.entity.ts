@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Transform } from 'class-transformer';
 import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '@users/enums';
+import { Role } from '../enums';
 
 export type UserDocument = User & Document;
 

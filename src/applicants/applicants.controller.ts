@@ -22,13 +22,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Applicant } from './entities';
-import { ValidateObjectIdPipe } from '@common/pipes';
-import { ApplyApiStatus } from '@common/decorators';
+import { ValidateObjectIdPipe } from '../common/pipes';
+import { ApplyApiStatus } from '../common/decorators';
 import { ApplicantSnippetDto } from './dto';
 import {
   MongooseClassSerializerInterceptor,
   TransformInterceptor,
-} from '@common/interceptors';
+} from '../common/interceptors';
 
 @Controller('applicants')
 @ApiTags('Applicants')

@@ -1,11 +1,11 @@
-import { Applicant, ApplicantSchema } from '@applicants/entities';
-import { Job, JobSchema } from '@jobs/entities';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { Document, ObjectId } from 'mongoose';
 import { Qualification, QualificationSchema } from './qualification.entity';
 import { FileDocument, FileDocumentSchema } from './file-document.entity';
+import { Applicant, ApplicantSchema } from '../../applicants/entities';
+import { Job, JobSchema } from '../../jobs/entities';
 
 // We have each schema in it's own file (Open-Closed Principle)
 @Schema({
