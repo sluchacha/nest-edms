@@ -12,5 +12,6 @@ export const userStub = (): User => {
     role: Role.ADMIN,
     isActive: true,
     lastAccessedOn: new Date(),
+    fullName: 'Stephen Luchacha',
   };
 };

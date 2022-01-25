@@ -1,64 +1,50 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from '../../src/users/users.module';
-import { Role } from '../../src/users/enums';
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { CreateUserDto } from '../../src/users/dto';
+import { UsersModule } from '../../src/users/users.module';
+import { getModelToken } from '@nestjs/mongoose';
+import { User } from '../../src/users/entities';
+import { createMockModel, MockModel } from '../../src/database/test/support';
+import { userStub } from '../../src/users/test/stubs';
 
-describe('[Feature] Users - /users', () => {
-  const user = {
-    firstName: 'STEPHEN',
-    lastName: 'LUCHACHA',
-    email: 'luchacha.s@gmail.com',
-    password: '12345678',
-    password_confirm: '12345678',
-    role: Role.ADMIN,
-  };
+describe('UsersController (e2e)', () => {
   let app: INestApplication;
-  let uri: string =
-    'mongodb+srv://example:example12345@cluster0.0ngty.mongodb.net/test-nest-edms?retryWrites=true&w=majority&ssl=true';
+  let UserModel: MockModel<User>;
 
   beforeAll(async () => {
+    UserModel = createMockModel<User>();
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule, MongooseModule.forRoot(uri)],
-    }).compile();
+      imports: [UsersModule],
+    })
+      .overrideProvider(getModelToken(User.name))
+      .useValue(UserModel)
+      .compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-        forbidNonWhitelisted: true,
-        transformOptions: {
-          enableImplicitConversion: true,
-        },
-      }),
-    );
     await app.init();
   });
 
-  it('Create [POST /]', () => {
+  it('/users (GET)', () => {
+    const user = userStub();
+    jest.spyOn(UserModel, 'find').mockImplementation(() => {
+      return {
+        exec: jest.fn().mockResolvedValue([{ ...user, id: user._id }]),
+      };
+    });
     return request(app.getHttpServer())
-      .post('/users')
-      .send(user as CreateUserDto)
-      .expect(HttpStatus.CREATED)
-      .then(({ body }) => {
-        const expectedUser = jasmine.objectContaining({
-          fullName: `${user.firstName} ${user.lastName}`,
+      .get('/users')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, [
+        {
+          id: user._id,
+          fullName: user.fullName,
           email: user.email,
           role: user.role,
-          isActive: true,
-        });
-        expect(body).toEqual(expectedUser);
-      });
-  });
-  it.todo('Get all [GET /]');
-  it.todo('Get one [GET /:id]');
-  it.todo('Update one [PATCH /:id]');
-  it.todo('Delete one [Delete /:id]');
-
-  afterAll(async () => {
-    await app.close();
+          isActive: user.isActive,
+          lastAccessedOn: user.lastAccessedOn.toISOString(),
+        },
+      ]);
   });
 });
