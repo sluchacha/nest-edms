@@ -21,10 +21,10 @@ export class User {
 
   //Virtuals
   @ApiProperty({ example: 'John Doe' })
-  fullName: string;
+  fullName?: string;
 
   //Method Functions
-  validatePassword: Function;
+  validatePassword?: Function;
 
   //Actual Properties
   @Prop({ maxlength: 50, required: true, trim: true, uppercase: true })

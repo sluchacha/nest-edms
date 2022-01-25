@@ -29,10 +29,11 @@ export class UsersService {
     const { email } = createUserDto;
 
     // Check if user exists using email
-    const exists = await this.userModel.findOne({ email }).exec();
-    if (exists) throw new BadRequestException('The user is already registered');
+    // const exists = await this.userModel.findOne({ email }).exec();
+    // if (exists) throw new BadRequestException('The user is already registered');
 
     const user = new this.userModel(createUserDto);
+    // return user.save();
     return this.userModel.create(user);
   }
 
@@ -72,16 +73,11 @@ export class UsersService {
 
   async findOne(id: string): Promise<User> {
     const user = await this.userModel.findOne({ _id: id }).exec();
-
-    /* if (!user) {
+    if (!user) {
       throw new NotFoundException(`User #${id} not found`);
-    } */
-    console.log({ user });
-    return user;
-  }
+    }
 
-  async findOneByCondition(filterCondition: any): Promise<User> {
-    return await this.userModel.findOne({ $where: filterCondition }).exec();
+    return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
