@@ -1,22 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Role } from './enums';
+import { createUserDtoStub, updateUserDtoStub } from './test/stubs';
+import { mockUsersService } from './test/support';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
-// jest.useRealTimers();
 describe('UsersController', () => {
   let controller: UsersController;
 
-  const mockUsersService = {
-    create: jest.fn().mockImplementation((dto) =>
-      Promise.resolve({
-        id: Date.now().toString(),
-        ...dto,
-      }),
-    ),
-  };
-
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [UsersService],
@@ -28,28 +19,50 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  /* it('should be defined', () => {
+  it('should be defined', () => {
     expect(controller).toBeDefined();
-  }); */
+  });
 
   it('should create a user', async () => {
-    jest.setTimeout(30000);
-    //"testTimeout": 90000 in jest config
-    //jest.useFakeTimers('legacy')
-    const dto = {
-      firstName: 'STEPHEN',
-      lastName: 'LUCHACHA',
-      email: 'luchacha.s@gmail.com',
-      password: '12345678',
-      password_confirm: '12345678',
-      role: Role.ADMIN,
-    };
-
-    expect(await controller.create(dto)).toEqual({
+    expect.assertions(2);
+    const dto = createUserDtoStub();
+    const result = await controller.create(dto);
+    expect(result).toEqual({
       id: expect.any(String),
       ...dto,
     });
+    expect(mockUsersService.create).toHaveBeenCalledWith(dto);
+  });
 
-    // expect(mockUsersService.create).toHaveBeenCalled();
+  it('should find all users', async () => {
+    expect.assertions(2);
+    const result = await controller.findAll();
+    expect(result.length).toBe(2);
+    expect(mockUsersService.findAll).toHaveBeenCalled();
+  });
+
+  it('should find a single user', async () => {
+    expect.assertions(2);
+    const result = await controller.findOne('1');
+    expect(result).toHaveProperty('id', '1');
+    expect(mockUsersService.findOne).toHaveBeenCalledWith('1');
+  });
+
+  it('should update a user', async () => {
+    expect.assertions(2);
+    const dto = updateUserDtoStub();
+    const result = await controller.update('1', dto);
+    expect(result).toEqual({
+      id: '1',
+      ...dto,
+    });
+    expect(mockUsersService.update).toHaveBeenCalledWith('1', dto);
+  });
+
+  it('should remove a user', async () => {
+    expect.assertions(2);
+    const result = await controller.remove('1');
+    expect(result).toHaveProperty('id', '1');
+    expect(mockUsersService.remove).toHaveBeenCalledWith('1');
   });
 });
