@@ -11,33 +11,7 @@ export const createMockModel = <T = any>(): MockModel<T> => ({
   find: jest.fn(),
   findOne: jest.fn(),
   findById: jest.fn(),
+  findByIdAndUpdate: jest.fn(),
+  findByIdAndRemove: jest.fn(),
   create: jest.fn(),
 });
-
-export abstract class MockModelForCreate<T> {
-  protected abstract entityStub: T;
-
-  constructor(createEntityData: T) {
-    this.constructorSpy(createEntityData);
-  }
-
-  constructorSpy(_createEntityData: T): void {}
-
-  findOne(): { exec: () => T } {
-    return {
-      exec: (): T => this.entityStub,
-    };
-  }
-
-  async find(): Promise<T[]> {
-    return [this.entityStub];
-  }
-
-  async create(): Promise<T> {
-    return this.entityStub;
-  }
-
-  async findOneAndUpdate(): Promise<T> {
-    return this.entityStub;
-  }
-}
