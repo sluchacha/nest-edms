@@ -84,7 +84,8 @@ export class AuthService {
     return user;
   }
 
-  async findOne(id: string) {
-    return await this.usersService.findOne(id);
+  async findOne(id: string): Promise<any> {
+    const { password, ...rest } = await this.usersService.findOne(id);
+    return rest;
   }
 }

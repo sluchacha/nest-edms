@@ -31,8 +31,6 @@ export class UsersService {
     const exists = await this.userModel.findOne({ email }).exec();
     if (exists) throw new BadRequestException('The user is already registered');
 
-    // const user = new this.userModel(createUserDto);
-    // return user.save();
     return this.userModel.create(createUserDto);
   }
 

@@ -45,7 +45,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Register a new application user' })
   @ApiCreatedResponse({ type: UserSnippetDto })
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     return await this.usersService.create(createUserDto);
   }
 
