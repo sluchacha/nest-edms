@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicantsModule } from './applicants/applicants.module';
@@ -12,12 +11,11 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { FeatureConfigModule } from './feature-config/feature-config.module';
 import {
-  MongoConfiguration,
-  mongoConfiguration,
   MulterConfiguration,
   multerConfiguration,
 } from './feature-config/configuration';
 import { MulterModule } from '@nestjs/platform-express';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -25,15 +23,6 @@ import { MulterModule } from '@nestjs/platform-express';
     ApplicationsModule,
     JobsModule,
     OrganizationsModule,
-    MongooseModule.forRootAsync({
-      inject: [mongoConfiguration.KEY],
-      useFactory: (config: MongoConfiguration) => {
-        return {
-          uri: config.uri,
-          dbName: config.dbName,
-        };
-      },
-    }),
     MulterModule.registerAsync({
       inject: [multerConfiguration.KEY],
       useFactory: (config: MulterConfiguration) => {
@@ -49,6 +38,7 @@ import { MulterModule } from '@nestjs/platform-express';
     UsersModule,
     AuthModule,
     FeatureConfigModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

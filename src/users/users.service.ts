@@ -4,18 +4,18 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import * as dot from 'dot-object';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User, UserDocument } from './entities';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    // @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly usersRepository: UsersRepository,
   ) {}
 
   /**
@@ -28,10 +28,10 @@ export class UsersService {
     const { email } = createUserDto;
 
     // Check if user exists using email
-    const exists = await this.userModel.findOne({ email }).exec();
+    const exists = await this.usersRepository.findOne({ email });
     if (exists) throw new BadRequestException('The user is already registered');
 
-    return this.userModel.create(createUserDto);
+    return this.usersRepository.create(createUserDto);
   }
 
   /**
@@ -40,7 +40,7 @@ export class UsersService {
    * @memberof UsersService
    */
   async findAll(): Promise<User[]> {
-    const users = await this.userModel.find().exec();
+    const users = await this.usersRepository.find();
     return users;
   }
 
@@ -52,7 +52,7 @@ export class UsersService {
    * @memberof UsersService
    */
   async findOneByEmail(email: string): Promise<UserDocument | undefined> {
-    const user = await this.userModel.findOne({ email }).exec();
+    const user = await this.usersRepository.findOne({ email });
 
     if (user) return user;
 
@@ -67,7 +67,7 @@ export class UsersService {
    * @memberof UsersService
    */
   async findOneById(id: string): Promise<UserDocument | undefined> {
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.usersRepository.findById(id);
 
     if (user) return user;
 
@@ -81,7 +81,7 @@ export class UsersService {
    * @memberof UsersService
    */
   async findOne(id: string): Promise<User> {
-    const user = await this.userModel.findOne({ _id: id }).exec();
+    const user = await this.usersRepository.findOne({ _id: id });
 
     if (!user) {
       throw new NotFoundException(`User #${id} not found`);
@@ -101,9 +101,7 @@ export class UsersService {
     dot.keepArray = true;
     const tgt = dot.dot(updateUserDto);
 
-    const user = await this.userModel
-      .findByIdAndUpdate(id, { $set: tgt }, { new: true })
-      .exec();
+    const user = await this.usersRepository.findByIdAndUpdate(id, tgt);
 
     if (!user)
       throw new BadRequestException(`The user with the given id was not found`);
@@ -118,7 +116,7 @@ export class UsersService {
    * @todo Check for related records before deleting
    */
   async remove(id: string): Promise<User> {
-    const user = await this.userModel.findByIdAndRemove(id).exec();
+    const user = await this.usersRepository.findByIdAndRemove(id);
 
     if (!user) {
       throw new BadRequestException('The user with the given id was not found');
