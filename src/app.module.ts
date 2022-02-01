@@ -16,6 +16,7 @@ import {
 } from './feature-config/configuration';
 import { MulterModule } from '@nestjs/platform-express';
 import { DatabaseModule } from './database/database.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { DatabaseModule } from './database/database.module';
     AuthModule,
     FeatureConfigModule,
     DatabaseModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

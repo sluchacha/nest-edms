@@ -1,0 +1,1001 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nest-edms documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">nest-edms documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-variables">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Miscellaneous</li>
+  <li>Variables</li>
+</ol>
+
+<section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#appConfiguration" title="src/feature-config/configuration/app.configuration.ts" ><b>appConfiguration</b>&nbsp;&nbsp;&nbsp;(src/.../app.configuration.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ApplicantSchema" title="src/applicants/entities/applicant.entity.ts" ><b>ApplicantSchema</b>&nbsp;&nbsp;&nbsp;(src/.../applicant.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ApplicationSchema" title="src/applications/entities/application.entity.ts" ><b>ApplicationSchema</b>&nbsp;&nbsp;&nbsp;(src/.../application.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ApplyApiStatus" title="src/common/decorators/apply-api-status.decorator.ts" ><b>ApplyApiStatus</b>&nbsp;&nbsp;&nbsp;(src/.../apply-api-status.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#createMockModel" title="src/database/test/support/mock.model.ts" ><b>createMockModel</b>&nbsp;&nbsp;&nbsp;(src/.../mock.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#createUserDtoStub" title="src/users/test/stubs/create-user-dto.stub.ts" ><b>createUserDtoStub</b>&nbsp;&nbsp;&nbsp;(src/.../create-user-dto.stub.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FileDocumentSchema" title="src/applications/entities/file-document.entity.ts" ><b>FileDocumentSchema</b>&nbsp;&nbsp;&nbsp;(src/.../file-document.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FileSchema" title="src/files/entities/file.entity.ts" ><b>FileSchema</b>&nbsp;&nbsp;&nbsp;(src/.../file.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#InjectAppConfig" title="src/feature-config/configuration/app.configuration.ts" ><b>InjectAppConfig</b>&nbsp;&nbsp;&nbsp;(src/.../app.configuration.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#InjectMongoConfig" title="src/feature-config/configuration/mongo.configuration.ts" ><b>InjectMongoConfig</b>&nbsp;&nbsp;&nbsp;(src/.../mongo.configuration.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#InjectMulterConfig" title="src/feature-config/configuration/multer.configuration.ts" ><b>InjectMulterConfig</b>&nbsp;&nbsp;&nbsp;(src/.../multer.configuration.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#IS_PUBLIC_KEY" title="src/auth/decorators/public.decorator.ts" ><b>IS_PUBLIC_KEY</b>&nbsp;&nbsp;&nbsp;(src/.../public.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JobSchema" title="src/jobs/entities/job.entity.ts" ><b>JobSchema</b>&nbsp;&nbsp;&nbsp;(src/.../job.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#mongoConfiguration" title="src/feature-config/configuration/mongo.configuration.ts" ><b>mongoConfiguration</b>&nbsp;&nbsp;&nbsp;(src/.../mongo.configuration.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#multerConfiguration" title="src/feature-config/configuration/multer.configuration.ts" ><b>multerConfiguration</b>&nbsp;&nbsp;&nbsp;(src/.../multer.configuration.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#OrganizationSchema" title="src/organizations/entities/organization.entity.ts" ><b>OrganizationSchema</b>&nbsp;&nbsp;&nbsp;(src/.../organization.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Permissions" title="src/common/decorators/permissions.decorator.ts" ><b>Permissions</b>&nbsp;&nbsp;&nbsp;(src/.../permissions.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Public" title="src/auth/decorators/public.decorator.ts" ><b>Public</b>&nbsp;&nbsp;&nbsp;(src/.../public.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#QualificationSchema" title="src/applications/entities/qualification.entity.ts" ><b>QualificationSchema</b>&nbsp;&nbsp;&nbsp;(src/.../qualification.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RegionSchema" title="src/applicants/entities/region.entity.ts" ><b>RegionSchema</b>&nbsp;&nbsp;&nbsp;(src/.../region.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TransactionParam" title="src/common/decorators/transaction-param.decorator.ts" ><b>TransactionParam</b>&nbsp;&nbsp;&nbsp;(src/.../transaction-param.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#updateUserDtoStub" title="src/users/test/stubs/update-user-dto.stub.ts" ><b>updateUserDtoStub</b>&nbsp;&nbsp;&nbsp;(src/.../update-user-dto.stub.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#USER_PERMISSIONS_KEY" title="src/common/decorators/permissions.decorator.ts" ><b>USER_PERMISSIONS_KEY</b>&nbsp;&nbsp;&nbsp;(src/.../permissions.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UserModel" title="src/users/test/support/user.model.ts" ><b>UserModel</b>&nbsp;&nbsp;&nbsp;(src/.../user.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UserSchema" title="src/users/entities/user.entity.ts" ><b>UserSchema</b>&nbsp;&nbsp;&nbsp;(src/.../user.entity.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UsersRepository" title="src/users/__mocks__/users.repository.ts" ><b>UsersRepository</b>&nbsp;&nbsp;&nbsp;(src/.../users.repository.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UsersService" title="src/users/__mocks__/users.service.ts" ><b>UsersService</b>&nbsp;&nbsp;&nbsp;(src/.../users.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#userStub" title="src/users/test/stubs/user.stub.ts" ><b>userStub</b>&nbsp;&nbsp;&nbsp;(src/.../user.stub.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>src/feature-config/configuration/app.configuration.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="appConfiguration"></a>
+                    <span class="name">
+                        <span ><b>appConfiguration</b></span>
+                        <a href="#appConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>registerAs(&#x27;app&#x27;, () &#x3D;&gt; {
+  return {
+    environment: process.env.NODE_ENV || &#x27;development&#x27;,
+    apiKey: process.env.API_KEY || &#x27;secret_key&#x27;,
+    jwtPrivateKey: process.env.JWT_PRIVATE_KEY || &#x27;secret_key&#x27;,
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || &#x27;1h&#x27;,
+    protocol: process.env.APP_PROTOCOL || &#x27;http&#x27;,
+    host: process.env.APP_HOST || &#x27;localhost&#x27;,
+    port: Number(process.env.APP_PORT) || 3000,
+    get domain() {
+      return &#x60;${this.protocol}://${this.host}:${this.port}&#x60;;
+    },
+  };
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="InjectAppConfig"></a>
+                    <span class="name">
+                        <span ><b>InjectAppConfig</b></span>
+                        <a href="#InjectAppConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; Inject(appConfiguration.KEY)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/applicants/entities/applicant.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ApplicantSchema"></a>
+                    <span class="name">
+                        <span ><b>ApplicantSchema</b></span>
+                        <a href="#ApplicantSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(Applicant)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/applications/entities/application.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ApplicationSchema"></a>
+                    <span class="name">
+                        <span ><b>ApplicationSchema</b></span>
+                        <a href="#ApplicationSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(Application)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/common/decorators/apply-api-status.decorator.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ApplyApiStatus"></a>
+                    <span class="name">
+                        <span ><b>ApplyApiStatus</b></span>
+                        <a href="#ApplyApiStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(...args: number[]) &#x3D;&gt; {
+  const hashMap &#x3D; {
+    200: ApiResponse({ status: 200, description: &#x27;Success&#x27; }),
+    201: ApiResponse({ status: 201, description: &#x27;Created&#x27; }),
+    204: ApiResponse({ status: 204, description: &#x27;No Content&#x27; }),
+    400: ApiResponse({ status: 400, description: &#x27;Bad Request&#x27; }),
+    401: ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27; }),
+    403: ApiResponse({ status: 403, description: &#x27;Forbiden&#x27; }),
+    404: ApiResponse({ status: 404, description: &#x27;Not Found&#x27; }),
+    500: ApiResponse({ status: 500, description: &#x27;Internal Server Error&#x27; }),
+  };
+
+  // Get keys to the hashMap
+  let mapKeys: number[] &#x3D; Object.keys(hashMap).map((d) &#x3D;&gt; +d);
+
+  // Return all statuses if there are no args
+  if (args.length &lt; 1) args &#x3D; [...mapKeys];
+
+  const decorators &#x3D; args
+    // Check if the values in args are appropriate keys
+    .filter((d) &#x3D;&gt; mapKeys.includes(d))
+    // Return the decorator
+    .map((d) &#x3D;&gt; hashMap[d]);
+
+  return applyDecorators(...decorators);
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/database/test/support/mock.model.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createMockModel"></a>
+                    <span class="name">
+                        <span ><b>createMockModel</b></span>
+                        <a href="#createMockModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&lt;T &#x3D; any&gt;(
+  entityStub: Function,
+): MockModel&lt;T&gt; &#x3D;&gt; ({
+  find: jest.fn().mockResolvedValue([entityStub()]),
+  findOne: jest
+    .fn()
+    .mockImplementation((entityFilterQuery, projection): { exec: () &#x3D;&gt; T } &#x3D;&gt; {
+      return {
+        exec: jest.fn().mockResolvedValue(entityStub()),
+      };
+    }),
+  findOneAndRemove: jest.fn().mockResolvedValue(entityStub()),
+  findOneAndUpdate: jest.fn().mockResolvedValue(entityStub()),
+  findById: jest.fn().mockResolvedValue(entityStub()),
+  findByIdAndRemove: jest.fn().mockResolvedValue(entityStub()),
+  findByIdAndUpdate: jest.fn().mockResolvedValue(entityStub()),
+  create: jest.fn().mockResolvedValue(entityStub()),
+  deleteMany: jest.fn().mockResolvedValue({ deletedCount: 1 }),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/test/stubs/create-user-dto.stub.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createUserDtoStub"></a>
+                    <span class="name">
+                        <span ><b>createUserDtoStub</b></span>
+                        <a href="#createUserDtoStub"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(): CreateUserDto &#x3D;&gt; {
+  const user &#x3D; userStub();
+  return {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    password: user.password,
+    password_confirm: user.password,
+    role: user.role,
+  };
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/applications/entities/file-document.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FileDocumentSchema"></a>
+                    <span class="name">
+                        <span ><b>FileDocumentSchema</b></span>
+                        <a href="#FileDocumentSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(FileDocument)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/files/entities/file.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FileSchema"></a>
+                    <span class="name">
+                        <span ><b>FileSchema</b></span>
+                        <a href="#FileSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(File)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/feature-config/configuration/mongo.configuration.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="InjectMongoConfig"></a>
+                    <span class="name">
+                        <span ><b>InjectMongoConfig</b></span>
+                        <a href="#InjectMongoConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; Inject(mongoConfiguration.KEY)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mongoConfiguration"></a>
+                    <span class="name">
+                        <span ><b>mongoConfiguration</b></span>
+                        <a href="#mongoConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>registerAs(&#x27;mongo&#x27;, () &#x3D;&gt; {
+  return {
+    uri: process.env.MONGO_URI || &#x27;mongodb://localhost:27017&#x27;,
+    dbName: process.env.MONGO_DB_NAME || &#x27;nest-edms&#x27;,
+  };
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/feature-config/configuration/multer.configuration.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="InjectMulterConfig"></a>
+                    <span class="name">
+                        <span ><b>InjectMulterConfig</b></span>
+                        <a href="#InjectMulterConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; Inject(multerConfiguration.KEY)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="multerConfiguration"></a>
+                    <span class="name">
+                        <span ><b>multerConfiguration</b></span>
+                        <a href="#multerConfiguration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>registerAs(&#x27;multer&#x27;, () &#x3D;&gt; {
+  return {
+    dest: process.env.MULTER_FILE_UPLOAD_PATH || &#x27;./upload&#x27;,
+    limits: {
+      fileSize: Number(process.env.MULTER_FILE_SIZE) || 2097152, //2 MB
+    },
+    fileFilter: (req, file, cb) &#x3D;&gt; {
+      if (!extname(file.originalname).match(/\.(pdf|jpg|jpeg|png|gif)$/))
+        cb(
+          new BadRequestException(
+            &#x60;Unsupported file type ${extname(file.originalname)}&#x60;,
+          ),
+          false,
+        );
+
+      cb(null, true);
+    },
+  };
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/auth/decorators/public.decorator.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="IS_PUBLIC_KEY"></a>
+                    <span class="name">
+                        <span ><b>IS_PUBLIC_KEY</b></span>
+                        <a href="#IS_PUBLIC_KEY"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;isPublic&#x27;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Public"></a>
+                    <span class="name">
+                        <span ><b>Public</b></span>
+                        <a href="#Public"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; SetMetadata(IS_PUBLIC_KEY, true)</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Custom decorator to mark a route as public to bypass JWT Authentication.
+Indicating that it requires no authentication.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/jobs/entities/job.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JobSchema"></a>
+                    <span class="name">
+                        <span ><b>JobSchema</b></span>
+                        <a href="#JobSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(Job)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/organizations/entities/organization.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="OrganizationSchema"></a>
+                    <span class="name">
+                        <span ><b>OrganizationSchema</b></span>
+                        <a href="#OrganizationSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(Organization)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/common/decorators/permissions.decorator.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Permissions"></a>
+                    <span class="name">
+                        <span ><b>Permissions</b></span>
+                        <a href="#Permissions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(...permissions: number[]) &#x3D;&gt;
+  SetMetadata(USER_PERMISSIONS_KEY, permissions)</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Custom decorator to mark a route with permissions.
+Indicating that it requires certain authorization
+it is tied to the - PermissionsGuard</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="USER_PERMISSIONS_KEY"></a>
+                    <span class="name">
+                        <span ><b>USER_PERMISSIONS_KEY</b></span>
+                        <a href="#USER_PERMISSIONS_KEY"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;permissions&#x27;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/applications/entities/qualification.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="QualificationSchema"></a>
+                    <span class="name">
+                        <span ><b>QualificationSchema</b></span>
+                        <a href="#QualificationSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(Qualification)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/applicants/entities/region.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RegionSchema"></a>
+                    <span class="name">
+                        <span ><b>RegionSchema</b></span>
+                        <a href="#RegionSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(Region)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/common/decorators/transaction-param.decorator.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TransactionParam"></a>
+                    <span class="name">
+                        <span ><b>TransactionParam</b></span>
+                        <a href="#TransactionParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ParameterDecorator</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {
+  return createParamDecorator((_data, req) &#x3D;&gt; {
+    return req.transaction;
+  });
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/test/stubs/update-user-dto.stub.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateUserDtoStub"></a>
+                    <span class="name">
+                        <span ><b>updateUserDtoStub</b></span>
+                        <a href="#updateUserDtoStub"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(): UpdateUserDto &#x3D;&gt; {
+  const user &#x3D; userStub();
+  return {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+  };
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/test/support/user.model.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UserModel"></a>
+                    <span class="name">
+                        <span ><b>UserModel</b></span>
+                        <a href="#UserModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>createMockModel&lt;User&gt;(userStub)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/entities/user.entity.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UserSchema"></a>
+                    <span class="name">
+                        <span ><b>UserSchema</b></span>
+                        <a href="#UserSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SchemaFactory.createForClass(User)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/__mocks__/users.repository.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UsersRepository"></a>
+                    <span class="name">
+                        <span ><b>UsersRepository</b></span>
+                        <a href="#UsersRepository"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>jest.fn().mockReturnValue({
+  create: jest.fn().mockResolvedValue(userStub()),
+  find: jest.fn().mockResolvedValue([userStub()]),
+  findOne: jest.fn().mockResolvedValue(userStub()),
+  findById: jest.fn().mockResolvedValue(userStub()),
+  findByIdAndUpdate: jest.fn().mockResolvedValue(userStub()),
+  findByIdAndRemove: jest.fn().mockResolvedValue(userStub()),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/__mocks__/users.service.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UsersService"></a>
+                    <span class="name">
+                        <span ><b>UsersService</b></span>
+                        <a href="#UsersService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>jest.fn().mockReturnValue({
+  create: jest.fn().mockResolvedValue(userStub()),
+  findAll: jest.fn().mockResolvedValue([userStub(), userStub()]),
+  findOne: jest.fn().mockResolvedValue(userStub()),
+  update: jest.fn().mockResolvedValue(userStub()),
+  remove: jest.fn().mockResolvedValue(userStub()),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/users/test/stubs/user.stub.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userStub"></a>
+                    <span class="name">
+                        <span ><b>userStub</b></span>
+                        <a href="#userStub"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(): User &#x3D;&gt; {
+  return {
+    _id: &#x27;61e2dd4b168ab2b132b39397&#x27;,
+    firstName: &#x27;Stephen&#x27;,
+    lastName: &#x27;Luchacha&#x27;,
+    email: &#x27;luchacha.s@gmail.com&#x27;,
+    password: &#x27;12345678&#x27;,
+    role: Role.ADMIN,
+    isActive: true,
+    lastAccessedOn: new Date(&#x27;2022-01-29T13:00:00.000Z&#x27;),
+  };
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
+            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

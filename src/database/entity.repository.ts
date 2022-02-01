@@ -6,12 +6,21 @@ import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 export abstract class EntityRepository<T extends Document> {
   constructor(protected readonly entityModel: Model<T>) {}
 
-  async find(entityFilterQuery: FilterQuery<T> = {}): Promise<T[] | null> {
+  async find(entityFilterQuery?: FilterQuery<T>): Promise<T[] | null> {
     return this.entityModel.find(entityFilterQuery);
   }
 
-  async findOne(entityFilterQuery: FilterQuery<T>): Promise<T | null> {
+  /* async findOne(entityFilterQuery: FilterQuery<T>): Promise<T | null> {
     return this.entityModel.findOne(entityFilterQuery);
+  } */
+
+  async findOne(
+    entityFilterQuery: FilterQuery<T>,
+    projection?: Record<string, unknown>,
+  ): Promise<T | null> {
+    return this.entityModel
+      .findOne(entityFilterQuery, { _id: 0, __v: 0, ...projection })
+      .exec();
   }
 
   async findOneAndRemove(entityFilterQuery: FilterQuery<T>): Promise<T | null> {
@@ -48,12 +57,11 @@ export abstract class EntityRepository<T extends Document> {
     });
   }
 
-  async create(createEntityData: any): Promise<T> {
-    const entity = new this.entityModel(createEntityData);
-    return entity.save();
+  async create(createEntityData: unknown): Promise<T> {
+    return this.entityModel.create(createEntityData);
   }
 
-  async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
+  async deleteMany(entityFilterQuery?: FilterQuery<T>): Promise<boolean> {
     const result = await this.entityModel.deleteMany(entityFilterQuery);
     return result.deletedCount >= 1;
   }

@@ -1,13 +1,14 @@
 import { CreateUserDto } from '../../dto';
-import { Role } from '../../enums';
+import { userStub } from './user.stub';
 
 export const createUserDtoStub = (): CreateUserDto => {
+  const user = userStub();
   return {
-    firstName: 'STEPHEN',
-    lastName: 'LUCHACHA',
-    email: 'luchacha.s@gmail.com',
-    password: '12345678',
-    password_confirm: '12345678',
-    role: Role.ADMIN,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    password: user.password,
+    password_confirm: user.password,
+    role: user.role,
   };
 };

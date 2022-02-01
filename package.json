@@ -21,10 +21,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:e2e:watch": "jest --config ./test/jest-e2e.json --detectOpenHandles --watch"
+    "test:e2e:watch": "jest --config ./test/jest-e2e.json --detectOpenHandles --watch",
+    "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve"
   },
   "dependencies": {
     "@casl/ability": "^5.4.3",
+    "@compodoc/compodoc": "^1.1.18",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
@@ -36,6 +38,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/schedule": "^1.0.2",
     "@nestjs/swagger": "^5.1.5",
+    "@nestjs/terminus": "^8.0.4",
     "@nestjs/throttler": "^2.0.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
