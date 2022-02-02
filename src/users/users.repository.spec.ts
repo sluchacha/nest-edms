@@ -1,11 +1,10 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { string } from 'joi';
 import { FilterQuery } from 'mongoose';
-import { User } from '../../entities';
-import { UsersRepository } from '../../users.repository';
-import { createUserDtoStub, updateUserDtoStub, userStub } from '../stubs';
-import { UserMockModel, UserModel } from '../support/user.model';
+import { User } from './entities';
+import { UsersRepository } from './users.repository';
+import { createUserDtoStub, updateUserDtoStub, userStub } from './test/stubs';
+import { UserMockModel, UserModel } from './test/support/user.model';
 
 describe('UsersRepository', () => {
   let usersRepository: UsersRepository;

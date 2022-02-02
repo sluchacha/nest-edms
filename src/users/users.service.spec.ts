@@ -1,13 +1,13 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUserDto } from '../../dto';
-import { User } from '../../entities';
-import { createUserDtoStub, updateUserDtoStub, userStub } from '../stubs';
-import { UsersService } from '../../users.service';
-import { UsersRepository } from '../../users.repository';
+import { CreateUserDto } from './dto';
+import { User } from './entities';
+import { createUserDtoStub, updateUserDtoStub, userStub } from './test/stubs';
+import { UsersService } from './users.service';
+import { UsersRepository } from './users.repository';
 import * as dot from 'dot-object';
 
-jest.mock('../../users.repository');
+jest.mock('./users.repository');
 
 jest.mock('dot-object', () => {
   const original = jest.requireActual('dot-object');
@@ -42,8 +42,7 @@ describe('UsersService', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       user = userStub();
-      const { _id, ...rest } = user;
-      dto = { ...rest, password_confirm: rest.password };
+      dto = createUserDtoStub();
 
       // User with email does not exist
       jest.spyOn(usersRepository, 'findOne').mockResolvedValue(null);
@@ -62,9 +61,7 @@ describe('UsersService', () => {
 
     it('should throw the "BadRequestException" when user with specified email exists', async () => {
       // User with email exists
-      jest.spyOn(usersRepository, 'findOne').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(user),
-      } as any);
+      jest.spyOn(usersRepository, 'findOne').mockResolvedValue(user as any);
 
       expect.assertions(2);
       try {
