@@ -7,7 +7,6 @@ import {
   Request,
   UseGuards,
   Get,
-  Logger,
   Req,
 } from '@nestjs/common';
 import {
@@ -24,19 +23,16 @@ import { AuthDto } from './dto';
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
-
   constructor(private readonly authService: AuthService) {}
 
   private _cookieResponse(response: ExpressResponse, access_token: string) {
-    this.logger.debug({ access_token });
     response
       .cookie('jwt', access_token, {
         httpOnly: true,
         domain: 'localhost',
         expires: new Date(Date.now() + 1000 * 60 * 60 * 8),
       })
-      .send({ access_token, message: `Token successfully created` });
+      .send({ access_token, success: true });
   }
 
   @Post('register')

@@ -1,68 +1,128 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { createUserDtoStub, updateUserDtoStub } from './test/stubs';
-import { mockUsersService } from './test/support';
+import { User } from './entities/user.entity';
+import { createUserDtoStub, updateUserDtoStub, userStub } from './test/stubs';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { CreateUserDto, UpdateUserDto } from './dto';
+
+jest.mock('./users.service');
 
 describe('UsersController', () => {
-  let controller: UsersController;
+  let usersController: UsersController;
+  let usersService: UsersService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [UsersService],
-    })
-      .overrideProvider(UsersService)
-      .useValue(mockUsersService)
-      .compile();
+    }).compile();
 
-    controller = module.get<UsersController>(UsersController);
+    usersController = module.get<UsersController>(UsersController);
+    usersService = module.get<UsersService>(UsersService);
+    jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  describe('create', () => {
+    describe('when create is called', () => {
+      let user: User;
+      let stub: User;
+      let dto: CreateUserDto;
 
-  it('should create a user', async () => {
-    expect.assertions(2);
-    const dto = createUserDtoStub();
-    const result = await controller.create(dto);
-    expect(result).toEqual({
-      id: expect.any(String),
-      ...dto,
+      beforeEach(async () => {
+        stub = userStub();
+        dto = createUserDtoStub();
+        user = await usersController.create(dto);
+      });
+
+      test('then it should call UsersService', () => {
+        expect(usersService.create).toHaveBeenCalledWith(dto);
+      });
+
+      test('then it should return a user', async () => {
+        expect(user).toEqual(stub);
+      });
     });
-    expect(mockUsersService.create).toHaveBeenCalledWith(dto);
   });
 
-  it('should find all users', async () => {
-    expect.assertions(2);
-    const result = await controller.findAll();
-    expect(result.length).toBe(2);
-    expect(mockUsersService.findAll).toHaveBeenCalled();
-  });
+  describe('findAll', () => {
+    describe('when findAll is called', () => {
+      let users: User[];
+      let stub: User;
 
-  it('should find a single user', async () => {
-    expect.assertions(2);
-    const result = await controller.findOne('1');
-    expect(result).toHaveProperty('id', '1');
-    expect(mockUsersService.findOne).toHaveBeenCalledWith('1');
-  });
+      beforeEach(async () => {
+        stub = userStub();
+        users = await usersController.findAll();
+      });
 
-  it('should update a user', async () => {
-    expect.assertions(2);
-    const dto = updateUserDtoStub();
-    const result = await controller.update('1', dto);
-    expect(result).toEqual({
-      id: '1',
-      ...dto,
+      test('then it should call UsersService', async () => {
+        expect(usersService.findAll).toHaveBeenCalled();
+      });
+
+      test('then it should return a list of users', async () => {
+        expect(users.length).toBe(2);
+      });
     });
-    expect(mockUsersService.update).toHaveBeenCalledWith('1', dto);
   });
 
-  it('should remove a user', async () => {
-    expect.assertions(2);
-    const result = await controller.remove('1');
-    expect(result).toHaveProperty('id', '1');
-    expect(mockUsersService.remove).toHaveBeenCalledWith('1');
+  describe('findOne', () => {
+    describe('when findOne is called', () => {
+      let user: User;
+      let stub: User;
+
+      beforeEach(async () => {
+        stub = userStub();
+        user = await usersController.findOne(stub._id);
+      });
+
+      test('then it should call UsersService', async () => {
+        expect(usersService.findOne).toHaveBeenCalledWith(stub._id);
+      });
+
+      test('then it should return a user', async () => {
+        expect(user).toEqual(stub);
+      });
+    });
+  });
+
+  describe('update', () => {
+    describe('when update is called', () => {
+      let user: User;
+      let stub: User;
+      let dto: UpdateUserDto;
+
+      beforeEach(async () => {
+        stub = userStub();
+        dto = updateUserDtoStub();
+        user = await usersController.update(stub._id, dto);
+      });
+
+      test('then it should call UsersService', async () => {
+        expect(usersService.update).toHaveBeenCalledWith(stub._id, dto);
+      });
+
+      test('then it should return a user', async () => {
+        expect(user).toEqual(stub);
+      });
+    });
+  });
+
+  describe('remove', () => {
+    describe('when remove is called', () => {
+      let user: User;
+      let stub: User;
+
+      beforeEach(async () => {
+        stub = userStub();
+        user = await usersController.remove(stub._id);
+      });
+
+      test('then it should call UsersService', async () => {
+        expect(usersService.remove).toHaveBeenCalledWith(stub._id);
+      });
+
+      test('then it should return a user', async () => {
+        expect(user).toEqual(stub);
+      });
+    });
   });
 });
