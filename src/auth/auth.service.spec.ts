@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { JwtPayload } from './types';
 import * as _ from 'lodash';
 
+jest.mock('lodash');
 jest.mock('../users/users.service');
 jest.mock('@nestjs/jwt', () => {
   const original = jest.requireActual('@nestjs/jwt');
