@@ -24,7 +24,7 @@ describe('AuthController', () => {
     expect(authController).toBeDefined();
   });
 
-  describe('register', () => {
+  /* describe('register', () => {
     describe('when register is called', () => {
       let result: any;
       let dto: CreateUserDto;
@@ -35,5 +35,5 @@ describe('AuthController', () => {
       });
       test('then it should call the AuthService', () => {});
     });
-  });
+  }); */
 });

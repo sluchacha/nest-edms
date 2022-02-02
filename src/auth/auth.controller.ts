@@ -26,7 +26,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   private _cookieResponse(response: ExpressResponse, access_token: string) {
-    response
+    return response
       .cookie('jwt', access_token, {
         httpOnly: true,
         domain: 'localhost',
