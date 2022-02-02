@@ -22,7 +22,7 @@ export class AuthService {
       if (!user) return undefined;
 
       // Check supplied password against the hash
-      if (!(await user?.validatePassword(password))) return undefined;
+      if (!(await user.validatePassword(password))) return undefined;
 
       // For active users update the last access date
       if (user.isActive) {

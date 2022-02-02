@@ -34,7 +34,7 @@ describe('UsersController', () => {
         user = await usersController.create(dto);
       });
 
-      test('then it should call UserService', () => {
+      test('then it should call UsersService', () => {
         expect(usersService.create).toHaveBeenCalledWith(dto);
       });
 
